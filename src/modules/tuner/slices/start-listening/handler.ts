@@ -1,11 +1,11 @@
-// The browser microphone is an I/O port. The handler keeps the open stream
-// and no audio.
 // Sample source the browser hands over for reading.
 export interface MicAnalysis {
   readonly sampleRate: number;
   samples(): Float32Array;
 }
 
+// The browser microphone is an I/O port. The handler keeps the open stream
+// and no audio.
 export interface MicStream {
   release(): void;
   // Optional so a stream without analysis, such as the test fakes, still works.
