@@ -25,4 +25,9 @@ export {
   type ValidationResult,
 } from "./slices/validate-song/handler";
 export { handler as toPractice } from "./slices/to-practice/handler";
+export {
+  handler as layoutFallingNotes,
+  type LayoutNote,
+  type PlacedNote,
+} from "./slices/layout-falling-notes/handler";
 export { type Song, type SongNote } from "./model";

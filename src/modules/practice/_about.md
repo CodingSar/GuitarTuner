@@ -17,3 +17,4 @@ Slices:
 - `list-songs`: returns the bundled songs, each with a title, a tempo, and a note sequence.
 - `validate-song`: checks that every note has a string 1-6 and a fret 0-24, and names the index of a note that fails.
 - `to-practice`: turns a song into the note sequence and a step length in milliseconds, one note per beat.
+- `layout-falling-notes`: places each note on its string row and at a canvas y from its hit time, the current time, and the fall speed; hit times never change.
