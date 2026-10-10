@@ -16,5 +16,8 @@ export function handler(
   speed: number,
   hitLineY: number,
 ): readonly PlacedNote[] {
-  throw new Error("not implemented");
+  return notes.map((note) => ({
+    row: note.string - 1,
+    y: hitLineY - (note.hitTime - now) * speed,
+  }));
 }
