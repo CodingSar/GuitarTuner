@@ -13,7 +13,7 @@ export interface TuningView {
 
 // Wires the preset selector to the tuning module and names the strings.
 export function mountTuning(view: TuningView): {
-  targets(): readonly Target[];
+  targets(referenceHz?: number): readonly Target[];
 } {
   let current = view.preset.value as PresetName;
 
@@ -28,6 +28,7 @@ export function mountTuning(view: TuningView): {
   view.preset.onChange(update);
 
   return {
-    targets: () => targetsFor(selectPreset(current), DEFAULT_REFERENCE_HZ),
+    targets: (referenceHz: number = DEFAULT_REFERENCE_HZ) =>
+      targetsFor(selectPreset(current), referenceHz),
   };
 }
