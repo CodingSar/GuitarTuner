@@ -11,3 +11,4 @@ Tables owned: none.
 Slices:
 
 - `start-session`: turns a sequence into falling notes with fixed hit times; pause and resume hold the notes at their positions.
+- `record-hit`: judges one falling note as hit, missed, or pending from the inputs played within the timing window.

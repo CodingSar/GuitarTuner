@@ -1,9 +1,11 @@
 ---
 id: TASK-7
 title: 'practice/record-hit: Record a hit or miss for each note'
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-10-10 11:41'
+updated_date: '2026-10-10 16:17'
 labels:
   - 'module:practice'
 milestone: Play falling notes
@@ -21,3 +23,18 @@ Core job from product-brief: play the right string and fret as notes fall. Each 
 - [ ] #1 GIVEN a note falling through the hit line WHEN the player plays the right string and fret within the timing window THEN the hit is recorded [brief: core jobs]
 - [ ] #2 GIVEN a note passes the hit line WHEN no matching input arrives within the timing window THEN the note is marked missed [brief: core jobs]
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Test first: src/modules/practice/slices/record-hit/handler.test.ts with one failing test per criterion (TASK-7#1 hit inside window, TASK-7#2 missed after window with no input). Stub src/modules/practice/slices/record-hit/handler.ts (not implemented). Re-export in src/modules/practice/index.ts as recordHit.
+2. Implement the pure judge in record-hit/handler.ts: handler(note, inputs, windowMs, now) returns 'hit' | 'missed' | 'pending'. A matching input has the same string and fret and time within windowMs of note.hitTime. Hit when a match exists. Missed when now is past hitTime + windowMs with no match. Pending otherwise. The timing window is a parameter; no default value is chosen here.
+3. Catalog: add record-hit line to src/modules/practice/_about.md.
+4. Tidy run for check findings. Verify: full test, scripts/check.sh.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+start: 978793ad1291f448e5bcdd309320ec487634023c
+<!-- SECTION:NOTES:END -->
