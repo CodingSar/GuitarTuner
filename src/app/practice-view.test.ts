@@ -195,4 +195,67 @@ describe("practice-view", () => {
 
     expect(practice.judgments()).toEqual(["pending", "pending", "pending"]);
   });
+
+  it("TASK-18#1 before Start, the tally is all zeros", () => {
+    const clock = fakeClock(0);
+    const practice = mountPractice([song], clock, 400);
+
+    expect(practice.tally()).toEqual({ hits: 0, missed: 0, streak: 0 });
+  });
+
+  it("TASK-18#1 after Start and judging, hits and missed in the tally match the judgments", () => {
+    const clock = fakeClock(0);
+    const practice = mountPractice([song], clock, 400);
+    practice.selectSong(0);
+    practice.start();
+    clock.time = 1000;
+    practice.hear(329.63, openHz);
+    // 2151 ms: the first note is hit, the second is past its window (2000 + 150) and missed.
+    clock.time = 2151;
+
+    expect(practice.judgments()).toEqual(["hit", "missed", "pending"]);
+    expect(practice.tally().hits).toBe(1);
+    expect(practice.tally().missed).toBe(1);
+  });
+
+  it("TASK-18#1 selecting a different song resets the tally to zeros until Start is called again", () => {
+    const clock = fakeClock(0);
+    const otherSong: Song = {
+      title: "U",
+      tempo: 60,
+      notes: [{ string: 4, fret: 2 }],
+    };
+    const practice = mountPractice([song, otherSong], clock, 400);
+    practice.selectSong(0);
+    practice.start();
+    clock.time = 1000;
+    practice.hear(329.63, openHz);
+
+    practice.selectSong(1);
+
+    expect(practice.tally()).toEqual({ hits: 0, missed: 0, streak: 0 });
+  });
+
+  it("TASK-18#2 selecting song index 1 and calling Start plays song 1's notes, not song 0's", () => {
+    const clock = fakeClock(0);
+    const otherSong: Song = {
+      title: "U",
+      tempo: 60,
+      notes: [
+        { string: 4, fret: 2 },
+        { string: 5, fret: 0 },
+      ],
+    };
+    const practice = mountPractice([song, otherSong], clock, 400);
+    practice.selectSong(1);
+    practice.start();
+
+    clock.time = 1000;
+    const placed = practice.frame();
+
+    expect(placed.map((note) => ({ row: note.row, fret: note.fret }))).toEqual([
+      { row: 3, fret: 2 },
+      { row: 4, fret: 0 },
+    ]);
+  });
 });

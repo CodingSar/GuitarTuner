@@ -11,6 +11,7 @@ import {
   type PracticeSession,
   type Song,
 } from "../modules/practice";
+import type { Tally } from "../modules/practice/slices/tally-judgments/handler";
 
 // The audio clock the practice view runs on. now() is in milliseconds.
 export interface PracticeClock {
@@ -31,6 +32,7 @@ export interface PracticeController {
   frame(): readonly PlacedNote[];
   hear(hz: number, openHz: readonly number[]): void;
   judgments(): readonly Judgment[];
+  tally(): Tally;
 }
 
 type Direction = "slow" | "fast";
@@ -125,6 +127,9 @@ export function mountPractice(
       if (session === undefined) return [];
       const t = audioTime();
       return session.notes.map((note) => recordHit(note, inputs, WINDOW_MS, t));
+    },
+    tally(): Tally {
+      throw new Error("not implemented");
     },
   };
 }
