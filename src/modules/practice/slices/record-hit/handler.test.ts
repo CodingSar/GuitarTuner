@@ -17,4 +17,13 @@ describe("record-hit", () => {
 
     expect(handler(note, inputs, WINDOW_MS, 1200)).toBe("missed");
   });
+
+  it("TASK-8#1 Player sets an audio-visual offset in milliseconds; hits are judged against the adjusted time; stored note times stay unchanged", () => {
+    const inputs: readonly PlayedInput[] = [{ string: 1, fret: 0, time: 1150 }];
+    const offset = { adjust: (time: number) => time - 100 };
+
+    expect(handler(note, inputs, WINDOW_MS, 1150, offset)).toBe("hit");
+    expect(handler(note, inputs, WINDOW_MS, 1050)).toBe("pending");
+    expect(note).toEqual({ string: 1, fret: 0, hitTime: 1000 });
+  });
 });

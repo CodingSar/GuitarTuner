@@ -17,12 +17,15 @@ export function handler(
   inputs: readonly PlayedInput[],
   windowMs: number,
   now: number,
+  offset?: { adjust(time: number): number },
 ): Judgment {
   const matched = inputs.some(
     (input) =>
       input.string === note.string &&
       input.fret === note.fret &&
-      Math.abs(input.time - note.hitTime) <= windowMs,
+      Math.abs(
+        (offset ? offset.adjust(input.time) : input.time) - note.hitTime,
+      ) <= windowMs,
   );
   if (matched) {
     return "hit";
