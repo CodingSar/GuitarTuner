@@ -50,4 +50,33 @@ describe("read pitch", () => {
     });
     expect(centsOf(reading)).toBeCloseTo(4, 0);
   });
+
+  it("TASK-10#1 A pitch deviation in cents equals 1200 times log2 of measured over target frequency and is shown against the active reference", () => {
+    // Measured 115 Hz against the 110 Hz A2 target.
+    const reading = handler(sine(115), SAMPLE_RATE, TARGETS);
+    expect(reading).toMatchObject({ kind: "reading", label: "A2" });
+    expect(centsOf(reading)).toBeCloseTo(1200 * Math.log2(115 / 110), 0);
+  });
+
+  it("TASK-10#6 The detector frequency band reaches the lowest target of the active preset, about 73.4 Hz for drop D", () => {
+    const reading = handler(toneOf(73.42, 8192), SAMPLE_RATE, DROP_D_TARGETS);
+    expect(reading).toMatchObject({ kind: "reading", label: "D2" });
+    expect(Math.abs(centsOf(reading))).toBeLessThan(1);
+  });
 });
+
+// Drop D targets: the low string is D2 at about 73.42 Hz, the rest as standard.
+const DROP_D_TARGETS: readonly Target[] = [
+  { label: "D2", hz: 73.42 },
+  { label: "A2", hz: 110 },
+  { label: "D3", hz: 146.83 },
+];
+
+// A steady sine at the given frequency over the given number of samples.
+function toneOf(hz: number, length: number): Float32Array {
+  const samples = new Float32Array(length);
+  for (let i = 0; i < length; i += 1) {
+    samples[i] = Math.sin((2 * Math.PI * hz * i) / SAMPLE_RATE);
+  }
+  return samples;
+}

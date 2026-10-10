@@ -86,3 +86,16 @@ describe("start listening", () => {
     expect(listener.state).toBe("idle");
   });
 });
+
+describe("start listening (TASK-10)", () => {
+  it("TASK-10#11 Pending, denied (NotAllowedError) are separate states", async () => {
+    const mic = fakeMic();
+    const { states, onState } = recorder();
+    const listener = handler(mic.source, onState);
+    expect(listener.state).toBe("pending");
+    mic.deny();
+    await listener.ready;
+    expect(listener.state).toBe("denied");
+    expect(states).toEqual(["pending", "denied"]);
+  });
+});

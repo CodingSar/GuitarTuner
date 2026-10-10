@@ -65,3 +65,27 @@ describe("start-session", () => {
     expect(session.timeToHit(1)).toBe(1200);
   });
 });
+
+describe("start-session (TASK-10)", () => {
+  it("TASK-10#13 Pausing suspends the AudioContext so that notes freeze with the audio clock", () => {
+    const clock = fakeClock(0);
+    const session = handler(threeNotes, clock, 1000);
+
+    clock.time = 300;
+    session.pause();
+    clock.time = 900;
+
+    expect(session.timeToHit(0)).toBe(700);
+    expect(session.timeToHit(1)).toBe(1700);
+
+    session.resume();
+
+    expect(session.timeToHit(0)).toBe(700);
+    expect(session.timeToHit(1)).toBe(1700);
+
+    clock.time = 1000;
+
+    expect(session.timeToHit(0)).toBe(600);
+    expect(session.timeToHit(1)).toBe(1600);
+  });
+});

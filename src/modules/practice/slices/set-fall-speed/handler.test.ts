@@ -21,3 +21,16 @@ describe("set-fall-speed", () => {
     expect(midRamp).toBeLessThan(0.2);
   });
 });
+
+describe("set-fall-speed (TASK-10)", () => {
+  it("TASK-10#15 Hit time is fixed when a note is created, and the speed toggle changes only the drawn distance per millisecond", () => {
+    const fallSpeed = handler(settings);
+    const hitTime = 2000;
+
+    expect(fallSpeed.drawnDistance(hitTime, 1000)).toBeCloseTo(100, 9);
+
+    fallSpeed.toggle(1000);
+
+    expect(fallSpeed.drawnDistance(hitTime, 1200)).toBeCloseTo(160, 9);
+  });
+});
