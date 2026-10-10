@@ -34,9 +34,12 @@ describe("start-session", () => {
       { index: 2, string: 3, fret: 2 },
     ]);
 
-    const hitTimes = session.notes.map((note) => note.hitTime);
-    expect(hitTimes[1]).toBeGreaterThan(hitTimes[0]);
-    expect(hitTimes[2]).toBeGreaterThan(hitTimes[1]);
+    const [first, second, third] = session.notes.map((note) => note.hitTime);
+    if (first === undefined || second === undefined || third === undefined) {
+      throw new Error("expected three notes with hit times");
+    }
+    expect(second).toBeGreaterThan(first);
+    expect(third).toBeGreaterThan(second);
     expect(session.timeToHit(0)).toBe(1000);
   });
 
