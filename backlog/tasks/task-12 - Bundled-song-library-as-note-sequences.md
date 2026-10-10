@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 17:33'
-updated_date: '2026-10-10 17:39'
+updated_date: '2026-10-10 17:40'
 labels:
   - 'module:practice'
   - song
@@ -13,15 +13,7 @@ dependencies: []
 documentation:
   - doc-1
 modified_files:
-  - src/modules/practice/model.ts
-  - src/modules/practice/index.ts
-  - src/modules/practice/_about.md
-  - src/modules/practice/slices/list-songs/handler.ts
-  - src/modules/practice/slices/list-songs/handler.test.ts
   - src/modules/practice/slices/validate-song/handler.ts
-  - src/modules/practice/slices/validate-song/handler.test.ts
-  - src/modules/practice/slices/to-practice/handler.ts
-  - src/modules/practice/slices/to-practice/handler.test.ts
 ordinal: 3000
 ---
 
@@ -60,4 +52,8 @@ Song data for step 2, written as string/fret pairs (E4=1/0, F4=1/1, G4=1/3, A4=1
 start: 64539092ee6efe1a816bdefb7d3fddbb88501e2e
 
 test-first: 6 new tests fail with 'not implemented'; 56 others pass. Test-writer wrote 4 tests under TASK-12#2 (guide says one per criterion); accepted, not retried.
+
+step 2: songs.ts data and list-songs handler; targeted list-songs test passes (1/1); tsc clean.
+
+step 3: validate-song handler; targeted tests pass (4/4); tsc clean. Also checks empty title and tempo > 0 (plan), noteIndex -1 for those.
 <!-- SECTION:NOTES:END -->
