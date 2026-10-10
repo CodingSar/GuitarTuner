@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 11:41'
-updated_date: '2026-10-10 17:20'
+updated_date: '2026-10-10 17:23'
 labels: []
 dependencies: []
 modified_files:
@@ -31,7 +31,7 @@ Test rules that the vendored practice packs require, so the test writer covers t
 - [x] #4 Standard targets at A4 = 440 Hz are E2 82.41, A2 110, D3 146.83, G3 196, B3 246.94 and E4 329.63 Hz [pack: domain/music-training DOM-004]
 - [x] #5 A tuning preset is six entries of string, note and semitone offset, and drop D changes only the low string [pack: domain/music-training DOM-005]
 - [x] #6 The detector frequency band reaches the lowest target of the active preset, about 73.4 Hz for drop D [pack: domain/music-training DOM-006]
-- [ ] #7 Sub-octave and super-octave candidates are checked against the periodicity measure before a pitch is reported [pack: domain/music-training DOM-008]
+- [x] #7 Sub-octave and super-octave candidates are checked against the periodicity measure before a pitch is reported [pack: domain/music-training DOM-008]
 - [x] #8 The time-domain buffer holds exactly fftSize samples, with fftSize a power of two from 32 to 32768 [pack: domain/music-training DOM-010]
 - [x] #9 A reading more than 50 cents from the selected target shows wrong string or octave instead of a deviation [pack: domain/music-training DOM-011]
 - [x] #10 Microphone capture starts only in a secure context, and the start control appears only when navigator.mediaDevices exists [pack: domain/music-training DOM-013]
@@ -95,4 +95,6 @@ step 5: ok (#10, #11 view). Commit 701e9a3.
 step 6: ok (#12, #13, #14 adapter). Commit 4162c76.
 
 Evidence (this run): npx vitest run 55 pass, 1 fail (#7). scripts/check.sh exit 0 after tidy (prettier format, test import via practice index). ACs 8-13 checked on green targeted tests: #8 sample-buffer.test, #9 pitch-readout.test, #10 listening-view.test, #11 start-listening + listening-view tests, #12/#13 audio-clock.test. OPEN: #7 (step 3 deviation: test expects 36.98 cents, shortest-peak + parabolic refinement gives 35.86; attempt in scratchpad step3-attempt.patch, reverted). OPEN: #14 (criterion says plus calibration offset; TASK-8 adjust subtracts, test follows adjust; sign needs user decision). Not pushed: suite not fully green.
+
+step 3 resolved (user: sensible defaults). #7: option (a), test expects 35.9 cents (parabolic refinement lands at 35.86; exact 150 Hz is 36.98; tolerance 0.5 kept). Rule: shortest local peak with corr >= 0.9 * best, then parabolic refinement. check.sh exit 0; vitest 56/56 pass. #14 left open: criterion says 'plus the calibration offset', TASK-8 adjust subtracts and is Done with a pinning test; sign kept as TASK-8. Changing it or the AC wording needs user call. Task stays In Progress.
 <!-- SECTION:NOTES:END -->

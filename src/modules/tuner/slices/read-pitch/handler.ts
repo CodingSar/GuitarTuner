@@ -21,6 +21,8 @@ const MAX_HZ = 1000;
 const CLARITY = 0.9;
 // Largest deviation that still shows as in tune, in cents.
 const IN_TUNE_CENTS = 5;
+// A shorter lag this close to the best one is the true period, not noise.
+const PEAK_SHARE = 0.9;
 
 export function handler(
   samples: Float32Array,
@@ -65,13 +67,27 @@ export function handler(
     return { kind: "none" };
   }
 
+  // The best lag may be a sub-octave multiple of the period. Take the shortest
+  // local peak that scores at least PEAK_SHARE of the best.
+  const bestValue = corr[best] ?? 0;
+  let period = best;
+  for (let lag = minLag; lag < best; lag += 1) {
+    const value = corr[lag] ?? 0;
+    const isPeak =
+      value >= (corr[lag - 1] ?? 0) && value >= (corr[lag + 1] ?? 0);
+    if (isPeak && value >= PEAK_SHARE * bestValue) {
+      period = lag;
+      break;
+    }
+  }
+
   // Parabolic interpolation around the peak refines the period in samples.
-  const left = corr[best - 1] ?? 0;
-  const mid = corr[best] ?? 0;
-  const right = corr[best + 1] ?? 0;
+  const left = corr[period - 1] ?? 0;
+  const mid = corr[period] ?? 0;
+  const right = corr[period + 1] ?? 0;
   const curvature = left - 2 * mid + right;
   const shift = curvature === 0 ? 0 : (0.5 * (left - right)) / curvature;
-  const hz = sampleRate / (best + shift);
+  const hz = sampleRate / (period + shift);
 
   // The target with the smallest absolute deviation wins.
   let found: { label: string; cents: number } | undefined;
