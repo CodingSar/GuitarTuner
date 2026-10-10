@@ -14,3 +14,6 @@ Slices:
 - `record-hit`: judges one falling note as hit, missed, or pending from the inputs played within the timing window.
 - `set-latency-offset`: holds the audio-visual offset in milliseconds and maps a time onto the adjusted time that hits are judged against.
 - `set-fall-speed`: holds the drawn fall speed, ramps it on toggle, and computes drawn distance from a fixed hit time; hit times never change.
+- `list-songs`: returns the bundled songs, each with a title, a tempo, and a note sequence.
+- `validate-song`: checks that every note has a string 1-6 and a fret 0-24, and names the index of a note that fails.
+- `to-practice`: turns a song into the note sequence and a step length in milliseconds, one note per beat.

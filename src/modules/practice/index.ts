@@ -19,3 +19,10 @@ export {
   type FallSpeed,
   type FallSpeedSettings,
 } from "./slices/set-fall-speed/handler";
+export { handler as listSongs } from "./slices/list-songs/handler";
+export {
+  handler as validateSong,
+  type ValidationResult,
+} from "./slices/validate-song/handler";
+export { handler as toPractice } from "./slices/to-practice/handler";
+export { type Song, type SongNote } from "./model";
