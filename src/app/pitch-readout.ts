@@ -1,14 +1,4 @@
-import type { Reading, Target } from "../modules/tuner";
-
-// Standard tuning until the tuning module provides the selected preset.
-export const standardTargets: readonly Target[] = [
-  { label: "E2", hz: 82.41 },
-  { label: "A2", hz: 110 },
-  { label: "D3", hz: 146.83 },
-  { label: "G3", hz: 196 },
-  { label: "B3", hz: 246.94 },
-  { label: "E4", hz: 329.63 },
-];
+import type { Reading } from "../modules/tuner";
 
 // The text the pitch readout shows for a reading.
 export function describeReading(reading: Reading): string {
