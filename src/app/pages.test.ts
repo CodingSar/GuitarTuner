@@ -11,12 +11,17 @@ type NavButton = { href: string | undefined; text: string };
 // The page's nav buttons: links with class token nav-button inside <nav aria-label="Pages">.
 function navButtons(html: string): NavButton[] {
   const nav = /<nav\b[^>]*aria-label="Pages"[^>]*>([\s\S]*?)<\/nav>/.exec(html);
-  const anchors = nav?.[1].match(/<a\b[\s\S]*?<\/a>/g) ?? [];
+  const anchors = nav?.[1]?.match(/<a\b[\s\S]*?<\/a>/g) ?? [];
   return anchors.flatMap((anchor) => {
     const open = /<a\b[^>]*>/.exec(anchor)?.[0] ?? "";
     const classes = attrValue(open, "class")?.split(/\s+/) ?? [];
     if (!classes.includes("nav-button")) return [];
-    return [{ href: attrValue(open, "href"), text: anchor.replace(/<[^>]*>/g, "").trim() }];
+    return [
+      {
+        href: attrValue(open, "href"),
+        text: anchor.replace(/<[^>]*>/g, "").trim(),
+      },
+    ];
   });
 }
 
