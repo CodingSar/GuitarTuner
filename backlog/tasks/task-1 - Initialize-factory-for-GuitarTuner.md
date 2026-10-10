@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 10:56'
-updated_date: '2026-10-10 11:44'
+updated_date: '2026-10-10 14:34'
 labels:
   - init-factory
 dependencies: []
@@ -48,4 +48,6 @@ criterion 6 (partial): provisioned .nvmrc, .github/workflows/ci.yml (SHAs pinned
 criterion 7: milestones m-0 Tune by microphone, m-1 Play falling notes, m-2 Adjust fall speed; drafts DRAFT-1..8 slices (tuning/select-preset, tuning/set-reference, tuner/start-listening, tuner/read-pitch, practice/start-session, practice/record-hit, practice/set-latency-offset, practice/set-fall-speed) with module labels and milestones; DRAFT-9 Practice tests with 16 pack-tagged criteria (15 domain/music-training + TS-017). Every slice criterion has exactly one tag or ASSUMED prefix. evidence: backlog milestone list and draft list show all of the above.
 
 criterion 8: walking skeleton. Module health (slice check: handler returns status ok + APP_VERSION; test TASK-1#8 health check reports ok with the version string). shared/config.ts (APP_VERSION). app/index.ts renderHealth wires check into a page element. No datastore: no store, no migrations (migration command none). Round 1 fix: prettier table in src/_about.md (npm run fix); no other rounds. Evidence: scripts/check.sh exit 0; npx vitest run src/modules/health/slices/check/handler.test.ts exit 0 (1 passed); npx vitest run exit 0 (1 passed); meta/core/tools/check-harness.sh exit 0 (ok: harness checks passed). CI run success on 2334c5e: https://github.com/CodingSar/GuitarTuner/actions/runs/38049431813 (all six steps green). Open: criterion 6 still unchecked (P3 settings allow entries blocked by classifier). Gap noted: check.sh SEC-002 forbid grep on index.html passes silently while index.html is absent; it must be made to fail on a missing file once index.html exists.
+
+findings: FINDINGS.md at repo root records the accepted gaps (Node 26 vs 24 pin: open; overlay path: standardized on meta/product/overlays/, template decision-7 title stale; PVR not enabled; security.txt not written; SEC-002 fail-open; jscpd markdown-only; ASSUMED seed criteria; pitchy deferred). User accepted items 1-2, 5-8 as stated, item 3 standardized, item 4 recorded. Criterion 6 still open: P3 settings allow entries not approved.
 <!-- SECTION:NOTES:END -->
