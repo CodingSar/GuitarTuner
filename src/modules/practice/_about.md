@@ -12,6 +12,7 @@ Slices:
 
 - `start-session`: turns a sequence into falling notes with fixed hit times; pause and resume hold the notes at their positions.
 - `record-hit`: judges one falling note as hit, missed, or pending from the inputs played within the timing window.
+- `tally-judgments`: counts the hit and missed judgments and the trailing hit streak, skipping pending entries; a miss resets the streak to 0.
 - `set-latency-offset`: holds the audio-visual offset in milliseconds and maps a time onto the adjusted time that hits are judged against.
 - `set-fall-speed`: holds the drawn fall speed, ramps it on toggle, and computes drawn distance from a fixed hit time; hit times never change.
 - `list-songs`: returns the bundled songs, each with a title, a tempo, and a note sequence.

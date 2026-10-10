@@ -10,5 +10,17 @@ export type Tally = {
 };
 
 export function handler(judgments: readonly Judgment[]): Tally {
-  throw new Error("not implemented");
+  let hits = 0;
+  let missed = 0;
+  let streak = 0;
+  for (const judgment of judgments) {
+    if (judgment === "hit") {
+      hits += 1;
+      streak += 1;
+    } else if (judgment === "missed") {
+      missed += 1;
+      streak = 0;
+    }
+  }
+  return { hits, missed, streak };
 }
