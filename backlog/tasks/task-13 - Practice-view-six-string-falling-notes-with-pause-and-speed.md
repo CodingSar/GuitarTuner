@@ -1,7 +1,7 @@
 ---
 id: TASK-13
 title: 'Practice view: six-string falling notes with pause and speed'
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 17:33'
@@ -37,10 +37,10 @@ Core job from the product brief: play the right string and fret as notes fall, w
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 GIVEN a song is selected WHEN the player presses Start THEN notes fall down six string rows and cross a visible hit line at their hit times
-- [ ] #2 GIVEN a running session WHEN the player presses Pause and then Resume THEN notes freeze and continue from the same positions
-- [ ] #3 GIVEN a running session WHEN the player picks Slower or Faster THEN the fall speed changes and the hit times do not move
-- [ ] #4 GIVEN the app is open WHEN the player switches between the Tuner and Practice pages THEN each page shows and works on its own
+- [x] #1 GIVEN a song is selected WHEN the player presses Start THEN notes fall down six string rows and cross a visible hit line at their hit times
+- [x] #2 GIVEN a running session WHEN the player presses Pause and then Resume THEN notes freeze and continue from the same positions
+- [x] #3 GIVEN a running session WHEN the player picks Slower or Faster THEN the fall speed changes and the hit times do not move
+- [x] #4 GIVEN the app is open WHEN the player switches between the Tuner and Practice pages THEN each page shows and works on its own
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -86,3 +86,9 @@ fret chain (revision e, f): LayoutNote and PlacedNote carry fret; layout and con
 
 step 4: practice.html, practice-page.ts (canvas, fret labels), index link, vite multi-page input, knip entry. Pages test passes; tsc clean; vite build ok (both pages). step 5: npm run fix, scripts/check.sh exit 0, full vitest 69/69. dist/ from the build was left in the repo folder: gitignored, guard blocked rm -rf.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added the practice page: practice.html with a canvas of six string lanes, a hit line and fret labels; reached from index.html. Logic in the practice module (layout-falling-notes slice; fret carried through LayoutNote/PlacedNote) and app/practice-view.ts (controller: song select, Start, Pause/Resume via session and audio clock, Slower/Faster with a direction flag, frame() from session audio time). Verified: controller tests cover Start placement (#1), Pause/Resume freeze (#2), Faster/Slower with hit times fixed (#3); layout tests cover six rows and hit-line crossing; pages test covers the two-page links and separate scripts (#4); vite build produces both pages. Full vitest 69/69; scripts/check.sh exit 0. Not verified: a live browser run (no browser in this environment), so the canvas drawing and audio pause are checked by code and build only.
+<!-- SECTION:FINAL_SUMMARY:END -->
