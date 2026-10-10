@@ -4,5 +4,5 @@ export function handler(song: Song): {
   readonly sequence: readonly SongNote[];
   readonly stepMs: number;
 } {
-  throw new Error("not implemented");
+  return { sequence: song.notes, stepMs: 60000 / song.tempo };
 }
