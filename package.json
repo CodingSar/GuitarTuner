@@ -1,0 +1,27 @@
+{
+  "name": "guitar-tuner",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.21.0"
+  },
+  "scripts": {
+    "fix": "eslint --fix src eslint.config.js vite.config.ts vitest.config.ts && prettier --write src scripts eslint.config.js vite.config.ts vitest.config.ts tsconfig.json package.json .dependency-cruiser.cjs",
+    "boundaries": "depcruise src --config .dependency-cruiser.cjs",
+    "duplication": "jscpd src --ignore \"**/*.test.ts\" --threshold 0"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "24.19.2",
+    "dependency-cruiser": "18.5.0",
+    "eslint": "10.12.0",
+    "jscpd": "5.4.1",
+    "knip": "6.41.0",
+    "prettier": "3.9.10",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.1",
+    "vite": "8.3.4",
+    "vitest": "5.0.3"
+  }
+}
