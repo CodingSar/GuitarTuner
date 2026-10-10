@@ -6,6 +6,8 @@ import type {
   MicStream,
 } from "../modules/tuner";
 import { describeReading } from "./pitch-readout";
+import { NO_PITCH, displayOf } from "./tuner-display";
+import type { TunerDisplay } from "./tuner-display";
 import {
   DEFAULT_REFERENCE_HZ,
   selectPreset,
@@ -19,12 +21,18 @@ export interface Control {
   onClick(fn: () => void): void;
 }
 
+// The note, meter and string marking the page shows for each frame.
+export interface PanelView {
+  show(display: TunerDisplay): void;
+}
+
 // The parts of the tuner page the listening view writes to and reads from.
 export interface ListeningView {
   status: { textContent: string | null };
   start: Control;
   stop: Control;
   readout: { hidden: boolean; textContent: string | null };
+  panel?: PanelView;
 }
 
 const statusText: Record<ListeningState, string> = {
@@ -89,6 +97,7 @@ export function mountListening(
     );
     view.readout.textContent = describeReading(reading);
     view.readout.hidden = false;
+    view.panel?.show(displayOf(reading));
     schedule(() => tick(gen));
   };
 
@@ -103,7 +112,10 @@ export function mountListening(
         state === "constraint-failed"
       );
     view.stop.hidden = !(state === "pending" || state === "listening");
-    if (state !== "listening") view.readout.hidden = true;
+    if (state !== "listening") {
+      view.readout.hidden = true;
+      view.panel?.show(NO_PITCH);
+    }
     // Start the loop only when there is a stream to read.
     if (state === "listening" && opened?.analysis) {
       running = true;

@@ -8,10 +8,10 @@ import type { PresetName, Target } from "../modules/tuning";
 // The parts of the tuning page the tuning view writes to and reads from.
 export interface TuningView {
   preset: { value: string; onChange(fn: () => void): void };
-  strings: { textContent: string | null };
+  strings: { setLabels(labels: readonly string[]): void };
 }
 
-// Wires the preset selector to the tuning module and names the strings.
+// Wires the preset selector to the tuning module and lists the strings.
 export function mountTuning(view: TuningView): {
   targets(referenceHz?: number): readonly Target[];
 } {
@@ -19,9 +19,9 @@ export function mountTuning(view: TuningView): {
 
   const update = (): void => {
     current = view.preset.value as PresetName;
-    view.strings.textContent = selectPreset(current)
-      .strings.map((string) => string.label)
-      .join(" ");
+    view.strings.setLabels(
+      selectPreset(current).strings.map((string) => string.label),
+    );
   };
 
   update();

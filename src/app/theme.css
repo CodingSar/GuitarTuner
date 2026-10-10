@@ -88,12 +88,91 @@ input {
   font-family: "IBM Plex Mono", monospace;
 }
 
+#panel {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding: 16px 0;
+}
+
+#note {
+  margin: 0;
+  color: var(--muted);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 112px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+#panel[data-state="reading"] #note {
+  color: var(--ink);
+}
+
+#panel[data-state="in-tune"] #note {
+  color: var(--ok);
+}
+
+#meter {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  height: 14px;
+  border-radius: 7px;
+  background: var(--line);
+}
+
+#meter::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--ink);
+}
+
+#needle {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+#panel[data-state="in-tune"] #needle {
+  background: var(--ok);
+}
+
+#side {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
 #strings {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   font-family: "IBM Plex Mono", monospace;
   font-size: 15px;
+}
+
+#strings li {
+  padding: 12px 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  text-align: center;
+}
+
+#strings li[aria-current="true"] {
+  border-color: var(--accent);
 }
 
 #status,
@@ -103,6 +182,7 @@ input {
 }
 
 #readout {
+  margin: 0;
   color: var(--ok);
   font-family: "IBM Plex Mono", monospace;
 }
@@ -129,34 +209,39 @@ main:has(#stage) > :not(button) {
 }
 
 @media (min-width: 900px) {
-  main:has(#strings) {
+  main:has(#panel) {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 64px;
+    align-items: start;
   }
 
-  main:has(#strings) > :not(#status, #start, #stop, #readout) {
+  main:has(#panel) > h1,
+  main:has(#panel) > p {
+    grid-column: 1 / -1;
+  }
+
+  main:has(#panel) > #panel {
     grid-column: 1;
+    justify-items: start;
+    padding: 0;
   }
 
-  main:has(#strings) > #status {
+  main:has(#panel) > #side {
     grid-column: 2;
-    grid-row: 1;
   }
 
-  main:has(#strings) > #start {
-    grid-column: 2;
-    grid-row: 2;
+  main:has(#panel) #note {
+    font-size: 176px;
   }
 
-  main:has(#strings) > #stop {
-    grid-column: 2;
-    grid-row: 3;
+  main:has(#panel) #strings {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  main:has(#strings) > #readout {
-    grid-column: 2;
-    grid-row: 4;
+  main:has(#panel) #strings li {
+    padding: 12px 16px;
+    text-align: left;
   }
 }
 

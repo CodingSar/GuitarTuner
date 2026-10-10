@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 17:34'
-updated_date: '2026-10-10 18:21'
+updated_date: '2026-10-10 18:29'
 labels:
   - ui
 dependencies:
@@ -49,4 +49,6 @@ Assumptions: lanes = 6 (design shows 6 columns, 5 divider lines); hit line stays
 start: ffd4945637f300a7da1b9cbeb88ab00ed39b393c
 
 Step 1: theme.css, Google Fonts link, stylesheet link in index.html and practice.html. Step 2: canvas palette read from tokens in new src/app/practice-palette.ts (split out to keep practice-page.ts under the 200-line cap). Follow-up: dropped the :root[data-theme=dark] block, since nothing sets data-theme and it was a jscpd clone of the media block. Dark follows OS only; data-theme=light still opts out. Deviates from the plan's step 1 wording. Checks: npx vitest run 77/77 pass; scripts/check.sh exit 0. Evidence: headless Firefox screenshots at 390 and 1280, light and dark, in scratchpad. Gaps still open: tuner big note name, cents meter and string rows; practice Hits/Missed/Streak stats and song list. Need new markup and JS, so AC1 and AC2 stay unchecked until the user decides.
+
+User decided: keep TASK-16 In Progress; AC1 and AC2 stay unchecked until TASK-17 and TASK-18 land. Re-verified: npx vitest run 77/77 pass; scripts/check.sh exit 0.
 <!-- SECTION:NOTES:END -->

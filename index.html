@@ -15,22 +15,30 @@
   <body>
     <main>
       <h1>Guitar tuner</h1>
-      <label>
-        Tuning
-        <select id="preset">
-          <option value="standard" selected>Standard</option>
-          <option value="drop-d">Drop D</option>
-        </select>
-      </label>
-      <label>
-        Reference A4 (Hz)
-        <input id="reference" type="number" value="440" step="0.1" min="1" />
-      </label>
-      <p id="strings"></p>
-      <p id="status" role="status">Idle</p>
-      <button id="start" type="button">Start listening</button>
-      <button id="stop" type="button" hidden>Stop</button>
-      <p id="readout" hidden></p>
+      <div id="panel" data-state="none">
+        <p id="note">–</p>
+        <div id="meter" aria-hidden="true">
+          <span id="needle" hidden></span>
+        </div>
+        <p id="readout" hidden></p>
+      </div>
+      <div id="side">
+        <p id="status" role="status">Idle</p>
+        <button id="start" type="button">Start listening</button>
+        <button id="stop" type="button" hidden>Stop</button>
+        <label>
+          Tuning
+          <select id="preset">
+            <option value="standard" selected>Standard</option>
+            <option value="drop-d">Drop D</option>
+          </select>
+        </label>
+        <label>
+          Reference A4 (Hz)
+          <input id="reference" type="number" value="440" step="0.1" min="1" />
+        </label>
+        <ul id="strings"></ul>
+      </div>
       <p><a href="practice.html">Practice</a></p>
     </main>
     <script type="module" src="/src/app/index.ts"></script>

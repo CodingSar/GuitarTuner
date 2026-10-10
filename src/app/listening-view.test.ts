@@ -1,7 +1,8 @@
 import { describe, it, expect } from "vitest";
 import type { MicSource, MicStream, Target } from "../modules/tuner";
 import { mountListening } from "./listening-view";
-import type { Control, ListeningView } from "./listening-view";
+import type { Control, ListeningView, PanelView } from "./listening-view";
+import { NO_PITCH, type TunerDisplay } from "./tuner-display";
 
 // A page with secure context and navigator.mediaDevices, so start is shown.
 const supported = { secure: true, mediaDevices: true };
@@ -168,6 +169,36 @@ describe("listening view", () => {
     await mic.settled();
     frames.at(-1)?.();
     expect(readout.textContent).toMatch(/^D2/);
+  });
+
+  it("TASK-17#4 the panel names A2 with the needle near the centre for a steady 110 Hz tone, and clears to the placeholder on Stop", async () => {
+    const { view, start, stop } = fakeView();
+    let last: TunerDisplay | undefined;
+    const panel: PanelView = {
+      show: (display) => {
+        last = display;
+      },
+    };
+    const mic = fakeMic();
+    const frames: Array<() => void> = [];
+    mountListening(
+      { ...view, panel },
+      mic.source,
+      (frame) => frames.push(frame),
+      undefined,
+      supported,
+    );
+    start.click();
+    mic.grant({
+      release: () => {},
+      analysis: { sampleRate: 44100, samples: () => sine(110, 4096) },
+    } as MicStream);
+    await mic.settled();
+    frames.at(-1)?.();
+    expect(last).toMatchObject({ note: "A2", label: "A2" });
+    expect(last?.position).toBeCloseTo(0.5, 1);
+    stop.click();
+    expect(last).toEqual(NO_PITCH);
   });
 });
 
