@@ -3,6 +3,8 @@ import { check } from "../modules/health";
 import { mountListening } from "./listening-view";
 import type { Control, ListeningView } from "./listening-view";
 import { browserMicrophone } from "./microphone";
+import { mountReference } from "./reference-view";
+import type { ReferenceView } from "./reference-view";
 import { mountTuning } from "./tuning-view";
 import type { TuningView } from "./tuning-view";
 
@@ -87,7 +89,21 @@ export function mountTunerPage(doc: Document): void {
     strings: textOf(byId<HTMLElement>(doc, "strings")),
   };
   const tuning = mountTuning(tuningView);
-  mountListening(view, browserMicrophone, undefined, tuning.targets);
+  const referenceInput = byId<HTMLInputElement>(doc, "reference");
+  const referenceView: ReferenceView = {
+    input: {
+      get value() {
+        return referenceInput.value;
+      },
+      onChange(fn: () => void) {
+        referenceInput.addEventListener("input", fn);
+      },
+    },
+  };
+  const reference = mountReference(referenceView);
+  mountListening(view, browserMicrophone, undefined, () =>
+    tuning.targets(reference.hz()),
+  );
 }
 
 mountTunerPage(document);
