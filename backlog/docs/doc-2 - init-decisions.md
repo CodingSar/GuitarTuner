@@ -3,7 +3,7 @@ id: doc-2
 title: init-decisions
 type: specification
 created_date: '2026-10-10 11:00'
-updated_date: '2026-10-10 11:00'
+updated_date: '2026-10-10 11:02'
 ---
 # init-decisions
 
@@ -21,5 +21,7 @@ Brief gate ratified 2026-10-10 (accept all). Rows cite product `decision-n` or h
 | - | integrations | Browser microphone input and audio output only; no external systems | ASSUMED: concept names none | Hosted backend; external services | criterion 2 |
 | - | non-goals | User accounts and cloud sync; sheet music or tab import; mobile or native builds | User answers | - | criterion 2 |
 | - | language preference | No preference; stack phase chooses and records it | User answer | Must be TypeScript; must be Python | criterion 2 |
+| - | facet domain/music-training | Miss in central index; ratified | Core jobs: pitch tuning, falling-note play, speed toggle | domain/audio-processing (pitch detection is a technique, not a field rule) | criterion 3 |
+| - | facet concern/security-web | Miss in central index; ratified | Deploy target: browser app; integrations: browser mic and audio | concern/privacy-gdpr (no personal data, no regime); concern/accessibility (no brief field raises it) | criterion 3 |
 
 Note for the stack gate: a server-less, storage-less product supersedes the HD-2 default datastore (PostgreSQL). That needs its own decision titled `Supersedes HD-2: ...`, to be raised at the stack gate, not here.
