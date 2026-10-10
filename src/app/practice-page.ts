@@ -15,6 +15,8 @@ import { fillOf, labelOf, palette } from "./practice-palette";
 import { mountPractice } from "./practice-view";
 import { mountSongCards, showTally } from "./practice-panel";
 import type { TallyElements } from "./practice-panel";
+import { mountTempoField } from "./tempo-field";
+import type { TempoFieldElements } from "./tempo-field";
 
 // Looks up an element by id. A missing element is a broken page, so fail loudly.
 function byId<T extends HTMLElement>(id: string): T {
@@ -47,6 +49,14 @@ const clock = audioClock(context);
 const hitLineY = 0.8 * canvas.height;
 const songs = listSongs();
 const practice = mountPractice(songs, clock, hitLineY);
+const tempoElements: TempoFieldElements = {
+  input: byId<HTMLInputElement>("bpm"),
+  error: byId<HTMLElement>("bpm-error"),
+  minus: byId<HTMLButtonElement>("tempo-minus"),
+  plus: byId<HTMLButtonElement>("tempo-plus"),
+  reset: byId<HTMLButtonElement>("tempo-reset"),
+};
+const tempoField = mountTempoField(tempoElements, practice);
 
 // The Standard preset as the tuner reads it, lowest string first. openHz is in
 // string order 1 to 6, where string 1 is the high E, so the list is reversed.
@@ -55,11 +65,13 @@ const openHz = targets.map((target) => target.hz).reverse();
 
 const markChosen = mountSongCards(songsBox, songs, (index) => {
   practice.selectSong(index);
+  tempoField.showDefault();
   void context.resume();
-  practice.start();
+  tempoField.startFromField();
   markChosen(index);
 });
 practice.selectSong(0);
+tempoField.showDefault();
 markChosen(0);
 
 // One open microphone: its listener, and the stream the browser hands over.
@@ -106,7 +118,7 @@ function toggleMic(): void {
 const actions: Record<string, () => void> = {
   start: () => {
     void context.resume();
-    practice.start();
+    tempoField.startFromField();
   },
   pause: () => practice.pause(),
   resume: () => practice.resume(),

@@ -20,6 +20,29 @@
       </nav>
       <h1>Guitar practice</h1>
       <div id="songs" class="song-cards"></div>
+      <div id="tempo">
+        <label for="bpm">Tempo (BPM)</label>
+        <div>
+          <button id="tempo-minus" type="button" aria-label="Slower by 5 BPM">
+            −
+          </button>
+          <input
+            id="bpm"
+            type="number"
+            inputmode="numeric"
+            min="20"
+            max="240"
+            step="1"
+            value="100"
+          />
+          <button id="tempo-plus" type="button" aria-label="Faster by 5 BPM">
+            +
+          </button>
+        </div>
+        <p id="bpm-error" role="alert"></p>
+        <p>Whole number, 20 to 240. Notes are spaced 60000 ÷ BPM ms apart.</p>
+        <button id="tempo-reset" type="button">Reset to song default</button>
+      </div>
       <div class="tally">
         <div class="readout">
           <span class="readout-label">Hits</span
