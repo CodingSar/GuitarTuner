@@ -8,6 +8,14 @@
   <body>
     <main>
       <h1>Guitar tuner</h1>
+      <label>
+        Tuning
+        <select id="preset">
+          <option value="standard" selected>Standard</option>
+          <option value="drop-d">Drop D</option>
+        </select>
+      </label>
+      <p id="strings"></p>
       <p id="status" role="status">Idle</p>
       <button id="start" type="button">Start listening</button>
       <button id="stop" type="button" hidden>Stop</button>

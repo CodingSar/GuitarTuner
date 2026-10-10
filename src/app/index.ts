@@ -3,6 +3,8 @@ import { check } from "../modules/health";
 import { mountListening } from "./listening-view";
 import type { Control, ListeningView } from "./listening-view";
 import { browserMicrophone } from "./microphone";
+import { mountTuning } from "./tuning-view";
+import type { TuningView } from "./tuning-view";
 
 // Writes the health answer into the element it is given.
 export function renderHealth(target: HTMLElement): void {
@@ -43,6 +45,18 @@ function readoutOf(element: HTMLElement): {
   });
 }
 
+// Exposes an element's text as a string-or-null property.
+function textOf(element: HTMLElement): { textContent: string | null } {
+  return {
+    get textContent() {
+      return element.textContent;
+    },
+    set textContent(value: string | null) {
+      element.textContent = value;
+    },
+  };
+}
+
 // Adapts a button to the Control the listening view expects.
 function control(button: HTMLButtonElement): Control {
   return Object.assign(hiddenFlag(button), {
@@ -60,7 +74,20 @@ export function mountTunerPage(doc: Document): void {
     stop: control(byId<HTMLButtonElement>(doc, "stop")),
     readout: readoutOf(byId<HTMLElement>(doc, "readout")),
   };
-  mountListening(view, browserMicrophone);
+  const select = byId<HTMLSelectElement>(doc, "preset");
+  const tuningView: TuningView = {
+    preset: {
+      get value() {
+        return select.value;
+      },
+      onChange(fn: () => void) {
+        select.addEventListener("change", fn);
+      },
+    },
+    strings: textOf(byId<HTMLElement>(doc, "strings")),
+  };
+  const tuning = mountTuning(tuningView);
+  mountListening(view, browserMicrophone, undefined, tuning.targets);
 }
 
 mountTunerPage(document);
