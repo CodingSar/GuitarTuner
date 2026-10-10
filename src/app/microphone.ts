@@ -1,4 +1,5 @@
 import type { MicAnalysis, MicSource, MicStream } from "../modules/tuner";
+import { sampleBufferFor } from "./sample-buffer";
 
 // The browser microphone. Processing is off so the raw pitch reaches the tuner.
 // Nothing is stored or recorded; release() stops the tracks.
@@ -17,7 +18,7 @@ export const browserMicrophone: MicSource = {
     const analyser = context.createAnalyser();
     analyser.fftSize = 4096;
     source.connect(analyser);
-    const buffer = new Float32Array(analyser.fftSize);
+    const buffer = sampleBufferFor(analyser.fftSize);
     const analysis: MicAnalysis = {
       sampleRate: context.sampleRate,
       samples() {
