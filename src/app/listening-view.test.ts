@@ -28,7 +28,11 @@ function fakeMic() {
       rejectOpen(error);
     },
     // Resolves after the open promise has settled and the view has reacted.
-    settled: () => opened.then(() => undefined, () => undefined),
+    settled: () =>
+      opened.then(
+        () => undefined,
+        () => undefined,
+      ),
     releases: () => releases,
   };
 }
@@ -44,7 +48,8 @@ function fakeControl(hidden: boolean): FakeControl {
       handler = fn;
     },
     click: () => {
-      if (handler === undefined) throw new Error("control has no click handler");
+      if (handler === undefined)
+        throw new Error("control has no click handler");
       handler();
     },
   };
