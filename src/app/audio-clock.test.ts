@@ -50,7 +50,7 @@ describe("audio clock", () => {
     expect(context.resumed()).toBe(1);
   });
 
-  it("TASK-10#14 Hits are judged against currentTime minus baseLatency and outputLatency plus the calibration offset, and stored note times are never edited", () => {
+  it("TASK-10#14 Hits are judged against currentTime minus baseLatency and outputLatency minus the calibration offset, and stored note times are never edited", () => {
     const context = fakeContext(1.0, 0.01, 0.02);
     const clock = audioClock(context);
     const storedNote = { hitTime: 1000 };

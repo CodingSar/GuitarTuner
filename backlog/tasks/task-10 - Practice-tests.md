@@ -1,11 +1,11 @@
 ---
 id: TASK-10
 title: Practice tests
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 11:41'
-updated_date: '2026-10-10 17:23'
+updated_date: '2026-10-10 17:26'
 labels: []
 dependencies: []
 modified_files:
@@ -38,7 +38,7 @@ Test rules that the vendored practice packs require, so the test writer covers t
 - [x] #11 Pending, denied (NotAllowedError), no device (NotFoundError) and constraint failure (OverconstrainedError) are separate states [pack: domain/music-training DOM-014]
 - [x] #12 Note positions and hit judgments derive from AudioContext.currentTime, and requestAnimationFrame is used only for drawing [pack: domain/music-training DOM-018]
 - [x] #13 Pausing suspends the AudioContext so that notes freeze with the audio clock [pack: domain/music-training DOM-020]
-- [ ] #14 Hits are judged against currentTime minus baseLatency and outputLatency plus the calibration offset, and stored note times are never edited [pack: domain/music-training DOM-021]
+- [x] #14 Hits are judged against currentTime minus baseLatency and outputLatency minus the calibration offset, and stored note times are never edited [pack: domain/music-training DOM-021]
 - [x] #15 Hit time is fixed when a note is created, and the speed toggle changes only the drawn distance per millisecond [pack: domain/music-training DOM-023]
 - [x] #16 Public contracts are typed with expectTypeOf in Vitest test files [pack: lang/typescript TS-017]
 <!-- AC:END -->
@@ -97,4 +97,12 @@ step 6: ok (#12, #13, #14 adapter). Commit 4162c76.
 Evidence (this run): npx vitest run 55 pass, 1 fail (#7). scripts/check.sh exit 0 after tidy (prettier format, test import via practice index). ACs 8-13 checked on green targeted tests: #8 sample-buffer.test, #9 pitch-readout.test, #10 listening-view.test, #11 start-listening + listening-view tests, #12/#13 audio-clock.test. OPEN: #7 (step 3 deviation: test expects 36.98 cents, shortest-peak + parabolic refinement gives 35.86; attempt in scratchpad step3-attempt.patch, reverted). OPEN: #14 (criterion says plus calibration offset; TASK-8 adjust subtracts, test follows adjust; sign needs user decision). Not pushed: suite not fully green.
 
 step 3 resolved (user: sensible defaults). #7: option (a), test expects 35.9 cents (parabolic refinement lands at 35.86; exact 150 Hz is 36.98; tolerance 0.5 kept). Rule: shortest local peak with corr >= 0.9 * best, then parabolic refinement. check.sh exit 0; vitest 56/56 pass. #14 left open: criterion says 'plus the calibration offset', TASK-8 adjust subtracts and is Done with a pinning test; sign kept as TASK-8. Changing it or the AC wording needs user call. Task stays In Progress.
+
+AC #14 reworded per user: 'plus the calibration offset' -> 'minus the calibration offset', matching TASK-8 LatencyOffset.adjust (subtracts). Test title updated to match. Checked on audio-clock.test.ts TASK-10#14 (adjust(heard) = heard - 100). Open follow-up, not changed: pack DOM-021 in meta/product/practices/packs/domain/music-training.md and enforced.md still say 'plus a user calibration offset'; AC no longer quotes the pack verbatim. meta/ is template-governed, so pack edit needs user approval.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Practice rules from the music-training pack, 16 ACs. Sub-octave check (#7) picks shortest local peak at >= 0.9 of best lag before parabolic refinement. #14 wording changed to 'minus the calibration offset' to match TASK-8 adjust. Verified: npx vitest run 56/56, scripts/check.sh exit 0. Open: pack DOM-021 in meta/product/practices still says 'plus'; needs approval to change since meta/ is template-governed.
+<!-- SECTION:FINAL_SUMMARY:END -->
