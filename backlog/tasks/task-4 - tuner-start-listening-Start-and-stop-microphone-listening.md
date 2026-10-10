@@ -1,11 +1,11 @@
 ---
 id: TASK-4
 title: 'tuner/start-listening: Start and stop microphone listening'
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 11:41'
-updated_date: '2026-10-10 15:12'
+updated_date: '2026-10-10 15:16'
 labels:
   - 'module:tuner'
 milestone: Tune by microphone
@@ -20,10 +20,10 @@ The tuner reads the guitar through the browser microphone. The player must see w
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 GIVEN the tuner is open WHEN the player starts listening THEN a pending state shows until the browser grants the microphone [brief: integrations]
-- [ ] #2 GIVEN the player has denied microphone access WHEN listening is requested THEN a denied state shows and no pitch readout appears [brief: integrations]
-- [ ] #3 GIVEN listening is running WHEN the player stops THEN the microphone is released and no audio is stored [brief: data sensitivity and compliance]
-- [ ] #4 GIVEN the player stops while microphone access is still pending WHEN the grant arrives THEN the microphone is released and the state stays idle [brief: data sensitivity and compliance]
+- [x] #1 GIVEN the tuner is open WHEN the player starts listening THEN a pending state shows until the browser grants the microphone [brief: integrations]
+- [x] #2 GIVEN the player has denied microphone access WHEN listening is requested THEN a denied state shows and no pitch readout appears [brief: integrations]
+- [x] #3 GIVEN listening is running WHEN the player stops THEN the microphone is released and no audio is stored [brief: data sensitivity and compliance]
+- [x] #4 GIVEN the player stops while microphone access is still pending WHEN the grant arrives THEN the microphone is released and the state stays idle [brief: data sensitivity and compliance]
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -53,3 +53,9 @@ scope: AC #4 added (stop-while-pending gap). Decided under user's standing instr
 
 step 2: sync handler implemented, 4/4 targeted pass (plus health = 5/5). Stop-while-pending covered by criterion 4.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Mic listening slice: sync listener, pending/listening/denied/idle states, stop releases the stream including a grant that arrives after stop. Tests: src/modules/tuner/slices/start-listening/handler.test.ts TASK-4#1-#4, 4/4 pass. Interface changed mid-task: handler returns Listener synchronously with ready: Promise<void> so stop works while pending. check.sh exit 0, full suite 9/9.
+<!-- SECTION:FINAL_SUMMARY:END -->

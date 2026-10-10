@@ -1,11 +1,11 @@
 ---
 id: TASK-11
 title: 'Tuner page: start and stop listening from the browser'
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 15:10'
-updated_date: '2026-10-10 15:12'
+updated_date: '2026-10-10 15:16'
 labels:
   - 'module:tuner'
 milestone: m-0
@@ -22,10 +22,10 @@ TASK-4 has a microphone handler but nothing in the app reaches it, so knip flags
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 ASSUMED: GIVEN the page has loaded WHEN the tuner starts THEN the status reads Idle and a Start listening control is shown
-- [ ] #2 ASSUMED: GIVEN the player presses Start listening WHEN the browser has not yet granted the microphone THEN the status reads Waiting for microphone permission
-- [ ] #3 GIVEN the player has denied microphone access WHEN the player presses Start listening THEN the status reads Microphone access denied and no pitch readout appears [brief: integrations]
-- [ ] #4 GIVEN listening is running WHEN the player presses Stop THEN the status reads Idle and the microphone is released [brief: data sensitivity and compliance]
+- [x] #1 ASSUMED: GIVEN the page has loaded WHEN the tuner starts THEN the status reads Idle and a Start listening control is shown
+- [x] #2 ASSUMED: GIVEN the player presses Start listening WHEN the browser has not yet granted the microphone THEN the status reads Waiting for microphone permission
+- [x] #3 GIVEN the player has denied microphone access WHEN the player presses Start listening THEN the status reads Microphone access denied and no pitch readout appears [brief: integrations]
+- [x] #4 GIVEN listening is running WHEN the player presses Stop THEN the status reads Idle and the microphone is released [brief: data sensitivity and compliance]
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -43,3 +43,9 @@ ASSUMED criteria #1 and #2 are copy defaults. User said choose sensible defaults
 
 start: 4419f9d10ee861a2b9f70d303fe728ef0d00610b
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Tuner page at index.html with Start/Stop, status line and hidden readout. Status text is copy defaults (ASSUMED criteria 1-2, confirmed by user's choose-defaults instruction). Mapping lives in src/app/listening-view.ts, tests TASK-11#1-#4 pass. Browser mic adapter in src/app/microphone.ts (echo/noise/AGC off). Wiring in src/app/index.ts. Verified: tests 9/9, check.sh exit 0, vite build succeeds. Not exercised in a real browser; the DOM binding is covered only by build and typecheck.
+<!-- SECTION:FINAL_SUMMARY:END -->
