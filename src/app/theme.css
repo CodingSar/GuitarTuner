@@ -269,6 +269,56 @@ main:has(#stage) > :not(button) {
   font-variant-numeric: tabular-nums;
 }
 
+#tempo {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+#tempo > label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+#tempo > div {
+  display: flex;
+  gap: 8px;
+}
+
+#tempo input {
+  flex: 1;
+  min-height: 48px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 22px;
+  text-align: center;
+}
+
+#tempo-minus,
+#tempo-plus {
+  width: 56px;
+  min-height: 48px;
+  font-size: 22px;
+}
+
+#tempo > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+#bpm-error {
+  color: var(--accent);
+}
+
+#tempo-reset {
+  justify-self: start;
+  border-style: dashed;
+  color: var(--muted);
+}
+
 nav[aria-label="Pages"] {
   display: flex;
   gap: 8px;
@@ -355,9 +405,14 @@ nav[aria-label="Pages"] {
     grid-row: 3;
   }
 
-  main:has(#stage) > .tally {
+  main:has(#stage) > #tempo {
     grid-column: 2 / -1;
     grid-row: 4;
+  }
+
+  main:has(#stage) > .tally {
+    grid-column: 2 / -1;
+    grid-row: 5;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
