@@ -4,5 +4,10 @@ export interface LatencyOffset {
 }
 
 export function handler(ms: number): LatencyOffset {
-  throw new Error("not implemented");
+  return {
+    ms,
+    adjust(time: number): number {
+      return time - ms;
+    },
+  };
 }
