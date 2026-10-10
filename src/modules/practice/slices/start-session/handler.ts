@@ -9,7 +9,7 @@ export interface Clock {
   now(): number;
 }
 
-export interface FallingNote {
+interface FallingNote {
   readonly index: number;
   readonly string: number;
   readonly fret: number;
