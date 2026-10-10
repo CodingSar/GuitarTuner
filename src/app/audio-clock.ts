@@ -16,6 +16,15 @@ export interface AudioClock {
 }
 
 export function audioClock(context: ClockContext): AudioClock {
-  void context;
-  throw new Error("not implemented");
+  return {
+    now: () => context.currentTime * 1000,
+    heard: () =>
+      (context.currentTime - context.baseLatency - context.outputLatency) * 1000,
+    pause: () => {
+      void context.suspend();
+    },
+    resume: () => {
+      void context.resume();
+    },
+  };
 }
