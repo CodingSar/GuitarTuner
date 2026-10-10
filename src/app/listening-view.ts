@@ -34,6 +34,17 @@ const statusText: Record<ListeningState, string> = {
   denied: "Microphone access denied",
 };
 
+// What the page can use for microphone capture.
+export interface ListeningSupport {
+  readonly secure: boolean;
+  readonly mediaDevices: boolean;
+}
+
+// Reads the page's microphone support from the browser.
+function detectSupport(): ListeningSupport {
+  throw new Error("not implemented");
+}
+
 // Wires the Start and Stop controls to the tuner's listening slice.
 export function mountListening(
   view: ListeningView,
@@ -43,6 +54,7 @@ export function mountListening(
   },
   targets: () => readonly Target[] = () =>
     targetsFor(selectPreset(), DEFAULT_REFERENCE_HZ),
+  support: ListeningSupport = detectSupport,
 ): void {
   let listener: Listener | undefined;
   // The most recently opened stream, and whether the reading loop runs.

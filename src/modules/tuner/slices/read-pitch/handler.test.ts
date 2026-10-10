@@ -80,3 +80,24 @@ function toneOf(hz: number, length: number): Float32Array {
   }
   return samples;
 }
+
+describe("read pitch (TASK-10)", () => {
+  it("TASK-10#7 Sub-octave and super-octave candidates are checked against the periodicity measure before a pitch is reported", () => {
+    const reading = handler(octaveLowWave(LENGTH), SAMPLE_RATE, TARGETS);
+    expect(reading).toMatchObject({ kind: "reading", label: "D3" });
+    expect(centsOf(reading)).toBeCloseTo(36.98, 0);
+  });
+});
+
+// A 150 Hz tone (period 294 samples) with a weaker component one octave down
+// (period 588 samples). The 588-sample lag scores highest, but the 294-sample
+// lag scores about 0.96 of it, so the 150 Hz period is the reported pitch.
+function octaveLowWave(length: number): Float32Array {
+  const samples = new Float32Array(length);
+  for (let i = 0; i < length; i += 1) {
+    samples[i] =
+      Math.sin((2 * Math.PI * i) / 294) +
+      0.15 * Math.cos((2 * Math.PI * i) / 588);
+  }
+  return samples;
+}

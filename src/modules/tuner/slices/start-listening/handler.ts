@@ -16,7 +16,13 @@ export interface MicSource {
   open(): Promise<MicStream>;
 }
 
-export type ListeningState = "idle" | "pending" | "listening" | "denied";
+export type ListeningState =
+  | "idle"
+  | "pending"
+  | "listening"
+  | "denied"
+  | "no-device"
+  | "constraint-failed";
 
 export interface Listener {
   readonly state: ListeningState;

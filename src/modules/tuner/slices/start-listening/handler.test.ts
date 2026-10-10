@@ -99,3 +99,40 @@ describe("start listening (TASK-10)", () => {
     expect(states).toEqual(["pending", "denied"]);
   });
 });
+
+// Fake browser microphone whose open() fails with an error of the given name.
+function failingMic(name: string) {
+  let rejectOpen: (reason: Error) => void = () => {};
+  const opened = new Promise<MicStream>((_resolve, reject) => {
+    rejectOpen = reject;
+  });
+  const source: MicSource = { open: () => opened };
+  return {
+    source,
+    fail: () => {
+      const error = new Error("microphone unavailable");
+      error.name = name;
+      rejectOpen(error);
+    },
+  };
+}
+
+describe("start listening (TASK-10 states)", () => {
+  it("TASK-10#11 Pending, denied (NotAllowedError), no device (NotFoundError) and constraint failure (OverconstrainedError) are separate states, no device (NotFoundError) case", async () => {
+    const mic = failingMic("NotFoundError");
+    const listener = handler(mic.source, () => {});
+    mic.fail();
+    // Settle ready; the state is what this test checks.
+    await listener.ready.catch(() => undefined);
+    expect(listener.state).toBe("no-device");
+  });
+
+  it("TASK-10#11 Pending, denied (NotAllowedError), no device (NotFoundError) and constraint failure (OverconstrainedError) are separate states, constraint failure (OverconstrainedError) case", async () => {
+    const mic = failingMic("OverconstrainedError");
+    const listener = handler(mic.source, () => {});
+    mic.fail();
+    // Settle ready; the state is what this test checks.
+    await listener.ready.catch(() => undefined);
+    expect(listener.state).toBe("constraint-failed");
+  });
+});

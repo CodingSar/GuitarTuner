@@ -160,3 +160,101 @@ describe("listening view", () => {
     expect(readout.textContent).toMatch(/^D2/);
   });
 });
+
+// Fake browser microphone whose open() fails with an error of the given name.
+function failingMic(name: string) {
+  let rejectOpen: (reason: Error) => void = () => {};
+  const opened = new Promise<MicStream>((_resolve, reject) => {
+    rejectOpen = reject;
+  });
+  const source: MicSource = { open: () => opened };
+  return {
+    source,
+    fail: () => {
+      const error = new Error("microphone unavailable");
+      error.name = name;
+      rejectOpen(error);
+    },
+    // Resolves after the open promise has settled and the view has reacted.
+    settled: () =>
+      opened.then(
+        () => undefined,
+        () => undefined,
+      ),
+  };
+}
+
+// Fake browser microphone that counts open() calls. Its open never settles.
+function countingMic() {
+  let opens = 0;
+  const source: MicSource = {
+    open: () => {
+      opens += 1;
+      return new Promise<MicStream>(() => {});
+    },
+  };
+  return { source, opens: () => opens };
+}
+
+const noSchedule = (): void => {};
+const noTargets = (): readonly Target[] => [];
+const supported = { secure: true, mediaDevices: true };
+
+describe("listening view (TASK-10)", () => {
+  it("TASK-10#10 Microphone capture starts only in a secure context, and the start control appears only when navigator.mediaDevices exists", () => {
+    // Not a secure context: start stays hidden and a click does not open the mic.
+    const insecure = fakeView();
+    const insecureMic = countingMic();
+    mountListening(insecure.view, insecureMic.source, noSchedule, noTargets, {
+      secure: false,
+      mediaDevices: true,
+    });
+    expect(insecure.start.hidden).toBe(true);
+    insecure.start.click();
+    expect(insecureMic.opens()).toBe(0);
+
+    // No navigator.mediaDevices: start stays hidden.
+    const noDevices = fakeView();
+    mountListening(
+      noDevices.view,
+      countingMic().source,
+      noSchedule,
+      noTargets,
+      { secure: true, mediaDevices: false },
+    );
+    expect(noDevices.start.hidden).toBe(true);
+
+    // Secure context with navigator.mediaDevices: start is shown.
+    const ready = fakeView();
+    mountListening(
+      ready.view,
+      countingMic().source,
+      noSchedule,
+      noTargets,
+      supported,
+    );
+    expect(ready.start.hidden).toBe(false);
+  });
+
+  it("TASK-10#11 Pending, denied (NotAllowedError), no device (NotFoundError) and constraint failure (OverconstrainedError) are separate states, no device (NotFoundError) case", async () => {
+    const { view, status, start } = fakeView();
+    const mic = failingMic("NotFoundError");
+    mountListening(view, mic.source, noSchedule, noTargets, supported);
+    mic.fail();
+    start.click();
+    await mic.settled();
+    expect(status.textContent).toBe("No microphone found");
+    expect(start.hidden).toBe(false);
+  });
+
+  it("TASK-10#11 Pending, denied (NotAllowedError), no device (NotFoundError) and constraint failure (OverconstrainedError) are separate states, constraint failure (OverconstrainedError) case", async () => {
+    const { view, status, start } = fakeView();
+    const mic = failingMic("OverconstrainedError");
+    mountListening(view, mic.source, noSchedule, noTargets, supported);
+    mic.fail();
+    start.click();
+    await mic.settled();
+    expect(status.textContent).toBe("Microphone constraints cannot be met");
+    expect(start.hidden).toBe(false);
+  });
+});
