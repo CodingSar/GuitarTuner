@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 19:07'
-updated_date: '2026-10-10 19:38'
+updated_date: '2026-10-10 19:41'
 labels:
   - 'module:practice'
   - ui
@@ -63,4 +63,7 @@ step 3: ok, to-practice 2/2, tempo ?? song.tempo (commit below)
 step 4: ok, practice-view 15/15 (defaultTempo throws only when no song chosen)
 
 step 5: ok, tempo-field 8/8, boundaries clean
+
+step 6: ok, pages.test 9/9, full suite 125/125, check.sh exit 0
+step 7 (added, not in plan allowlist): src/app/theme.css, #tempo styling and desktop grid placement (row 4 under songs, tally moved to row 5). Needed so the section lands between songs and tally, not below the stage. Desktop layout not checked visually.
 <!-- SECTION:NOTES:END -->
