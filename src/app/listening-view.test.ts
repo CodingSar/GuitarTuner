@@ -15,12 +15,14 @@ function fakeMic() {
   const source: MicSource = { open: () => opened };
   return {
     source,
-    grant: () => {
-      resolveOpen({
-        release: () => {
-          releases += 1;
+    grant: (stream?: MicStream) => {
+      resolveOpen(
+        stream ?? {
+          release: () => {
+            releases += 1;
+          },
         },
-      });
+      );
     },
     deny: () => {
       const error = new Error("microphone access denied");
@@ -59,9 +61,18 @@ function fakeView() {
   const status: { textContent: string | null } = { textContent: null };
   const start = fakeControl(true);
   const stop = fakeControl(true);
-  const readout = { hidden: true };
+  const readout = { hidden: true, textContent: null as string | null };
   const view: ListeningView = { status, start, stop, readout };
   return { view, status, start, stop, readout };
+}
+
+// A steady sine at the given frequency, sampled at 44100 Hz.
+function sine(hz: number, length: number): Float32Array {
+  const samples = new Float32Array(length);
+  for (let i = 0; i < length; i += 1) {
+    samples[i] = Math.sin((2 * Math.PI * hz * i) / 44100);
+  }
+  return samples;
 }
 
 describe("listening view", () => {
@@ -100,5 +111,22 @@ describe("listening view", () => {
     stop.click();
     expect(status.textContent).toBe("Idle");
     expect(mic.releases()).toBe(1);
+  });
+
+  it("TASK-5#1 the readout shows the nearest string when a steady tone is heard", async () => {
+    const { view, start, readout } = fakeView();
+    const mic = fakeMic();
+    const frames: Array<() => void> = [];
+    mountListening(view, mic.source, (frame) => {
+      frames.push(frame);
+    });
+    start.click();
+    mic.grant({
+      release: () => {},
+      analysis: { sampleRate: 44100, samples: () => sine(110, 4096) },
+    } as MicStream);
+    await mic.settled();
+    frames.at(-1)?.();
+    expect(readout.textContent).toContain("A2");
   });
 });
