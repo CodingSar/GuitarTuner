@@ -1,11 +1,11 @@
 ---
 id: TASK-21
 title: 'Tuner and practice: nav links look like buttons'
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 19:07'
-updated_date: '2026-10-10 19:26'
+updated_date: '2026-10-10 19:31'
 labels:
   - ui
 dependencies: []
@@ -20,9 +20,9 @@ The links between the Tuner and Practice pages look plain and out of place now t
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 GIVEN the Tuner page is open WHEN it is shown THEN the link to the Practice page is a button labelled Practice
-- [ ] #2 GIVEN the Practice page is open WHEN it is shown THEN the link to the Tuner page is a button labelled Tuner
-- [ ] #3 GIVEN either nav button WHEN it is tapped THEN the browser opens the other page, and the button is at least 44 px tall
+- [x] #1 GIVEN the Tuner page is open WHEN it is shown THEN the link to the Practice page is a button labelled Practice
+- [x] #2 GIVEN the Practice page is open WHEN it is shown THEN the link to the Tuner page is a button labelled Tuner
+- [x] #3 GIVEN either nav button WHEN it is tapped THEN the browser opens the other page, and the button is at least 44 px tall
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -43,4 +43,12 @@ Open choice to confirm: the AC says "button". Plan uses a styled link, not <butt
 
 <!-- SECTION:NOTES:BEGIN -->
 start: 2273d7ac7cdfe14c655434a948bcf6ba96d4819e
+
+AC#1, AC#2: src/app/pages.test.ts TASK-21#1 and #2 pass; index.html and practice.html carry nav[aria-label=Pages] with two a.nav-button links, aria-current on the current page. AC#3: TASK-21#3 passes; theme.css .nav-button sets min-height 44px. Hrefs unchanged (TASK-13#4 passes). Full suite 96/96 (npx vitest run). scripts/check.sh exit 0. Not checked: a live tap in a browser and a visual check at phone or desktop width; no DOM test environment in this task.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Nav links on the Tuner and Practice pages are now buttons. Markup: index.html and practice.html carry <nav aria-label="Pages"> with two a.nav-button links at the top of main; aria-current marks the current page. CSS: theme.css .nav-button is 44 px tall with the shared button border, radius and colours; the current page is filled. Links stay <a> (they navigate). Commits b53c4ad, 817a52c, 1f4a68d, 8a16de2. Tests: pages.test.ts TASK-21#1-#3; full suite 96/96; check.sh exit 0.
+<!-- SECTION:FINAL_SUMMARY:END -->
