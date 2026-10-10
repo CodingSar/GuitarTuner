@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 11:41'
-updated_date: '2026-10-10 15:30'
+updated_date: '2026-10-10 15:39'
 labels:
   - 'module:tuner'
 milestone: Tune by microphone
@@ -42,4 +42,6 @@ Scope note: standardTargets is app-side until TASK-2 lands; the tuning module is
 
 <!-- SECTION:NOTES:BEGIN -->
 start: 073fe7d1ed68804fff87943875d2238ab0251541. ASSUMED #3 (±5 cents) confirmed by user.
+
+steps 1-6 done, each gated (tests, tsc, prettier). Full vitest 18/18, tsc clean. Tidy done (header comment). Check: all lines pass except knip 'unused file src/modules/practice/index.ts' (same pre-existing blocker as TASK-6). ACs #1-#3 unchecked until the check passes. Not pushed.
 <!-- SECTION:NOTES:END -->
