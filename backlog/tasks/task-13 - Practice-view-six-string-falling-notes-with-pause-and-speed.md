@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 17:33'
-updated_date: '2026-10-10 17:47'
+updated_date: '2026-10-10 17:52'
 labels:
   - 'module:practice'
   - ui
@@ -14,13 +14,7 @@ dependencies:
   - TASK-9
   - TASK-12
 modified_files:
-  - src/modules/practice/slices/layout-falling-notes/handler.ts
-  - src/modules/practice/slices/layout-falling-notes/handler.test.ts
-  - src/modules/practice/index.ts
-  - src/modules/practice/_about.md
   - src/app/practice-view.ts
-  - src/app/practice-view.test.ts
-  - src/app/pages.test.ts
 ordinal: 4000
 ---
 
@@ -60,6 +54,8 @@ Fixed settings in the page: slowPerMs 0.15, fastPerMs 0.30, rampMs 500, hitLineY
 
 5. Tidy and verify (orchestrator): npm run fix, scripts/check.sh, full npx vitest run, npx vite build (confirm both pages build). Browser run not available here; AC2 and AC3 evidence is the controller tests, not a live page.
 Wiring: the practice page is the route for the view (step 4 is the app/ mapping).
+
+Revision after step 3 deviation (orchestrator decision): (a) frame() and the fall-speed toggles use the session's audio time, not clock.now(): audioTime = firstNote.hitTime - session.timeToHit(0) (0 before start). The session already freezes its own time on pause, so the view freezes with or without a stopped clock. (b) start() does not call clock.resume(); the page resumes the AudioContext on the Start click before calling start(). Pause and resume still call the clock. (c) slower() and faster() keep a direction flag (initial slow); a toggle runs only when the requested speed differs from the current one, so Slower from the start stays slow. (d) Test fix: practice-view.test.ts TASK-13#3 expects the faster note at 500 ms before its hit to be HIGHER on screen (smaller y), since at a fixed time before the hit a faster note covers more pixels. Add one test: after faster() then slower(), the y at 500 ms before the hit equals the steady-speed y. Retire: src/app/practice-view.test.ts :: TASK-13#3 (faster direction) -> rewrite as TASK-13#3.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -68,4 +64,8 @@ Wiring: the practice page is the route for the view (step 4 is the app/ mapping)
 start: 57dc8dc5cfb88e20a2a8622e85d786ffeeb7b7e2
 
 test-first: 6 new tests fail (5 not implemented, 1 ENOENT practice.html on pages test); 62 others pass. Controller test asserts clock pause/resume counts (plan asked; guide forbids call counts) accepted, not retried.
+
+step 2: layout-falling-notes handler; targeted tests pass (2/2); tsc clean.
+
+step 3 (rerun after revision): practice controller; targeted tests pass (4/4); tsc clean.
 <!-- SECTION:NOTES:END -->
