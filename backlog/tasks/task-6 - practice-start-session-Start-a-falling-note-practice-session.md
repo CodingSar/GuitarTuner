@@ -1,11 +1,11 @@
 ---
 id: TASK-6
 title: 'practice/start-session: Start a falling-note practice session'
-status: In Progress
+status: To Do
 assignee:
   - '@claude'
 created_date: '2026-10-10 11:41'
-updated_date: '2026-10-10 15:21'
+updated_date: '2026-10-10 15:24'
 labels:
   - 'module:practice'
 milestone: Play falling notes
@@ -40,4 +40,6 @@ Scope note: no page wiring in this task; the view that draws notes is not in TAS
 start: 9a046395c9d4309bc638fb24272988d2511ca4a9
 
 step 1: handler implemented, targeted tests 2/2 pass. Tidy: tsc findings in test file fixed (destructure + narrow). Full tests 11/11 pass, tsc clean. BLOCKED at check: knip reports src/modules/practice/index.ts unused and FallingNote unused export. No app consumer exists until a practice view is built. Needs decision: wire into app/, allow in knip.json, or defer.
+
+Deferred (option 3, sensible default). Handler + 2 tests pass; tsc clean; eslint/prettier clean. FallingNote export dropped. Index kept: structure.py requires a module index file, so it cannot be removed. Remaining blocker: knip 'Unused files: src/modules/practice/index.ts'. Clears when a practice view imports the index, or when knip.json gets an entry (needs user go-ahead, not done). ACs #1/#2 left unchecked until check passes. TASK-7 not started; same blocker.
 <!-- SECTION:NOTES:END -->
