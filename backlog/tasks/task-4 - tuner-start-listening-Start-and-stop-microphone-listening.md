@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 11:41'
-updated_date: '2026-10-10 15:10'
+updated_date: '2026-10-10 15:12'
 labels:
   - 'module:tuner'
 milestone: Tune by microphone
@@ -50,4 +50,6 @@ gap (not covered by a criterion): stop() while pending. A grant after stop() re-
 held In Progress (option 1): check blocked on knip unused src/modules/tuner/index.ts until the UI task imports the module. Not pushed.
 
 scope: AC #4 added (stop-while-pending gap). Decided under user's standing instruction: choose sensible defaults, finish tasks.
+
+step 2: sync handler implemented, 4/4 targeted pass (plus health = 5/5). Stop-while-pending covered by criterion 4.
 <!-- SECTION:NOTES:END -->
