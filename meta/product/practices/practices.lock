@@ -2,5 +2,24 @@
   "version": 1,
   "central": "git@github.com:CodingSar/GhostInsidePractices.git",
   "sha": "6acaf496694eebc57dd3b0a9e7d0c5959a5df379",
-  "packs": []
+  "packs": [
+    {
+      "id": "concern/security-web",
+      "origin": "local",
+      "researched": "2026-10-10",
+      "sha256": "6eba154c5bf018cad06c1fe36ce8ec09c94c18324ae219869ddfeda4efd8db7c"
+    },
+    {
+      "id": "domain/music-training",
+      "origin": "local",
+      "researched": "2026-10-10",
+      "sha256": "6714a8effdf37247d0153fc24ef73e48a5a1b86a54cbda5d7bea014968d1c8aa"
+    },
+    {
+      "id": "lang/typescript",
+      "origin": "local",
+      "researched": "2026-10-10",
+      "sha256": "1c16bc20a298166f7d80d9cc3b20d1419a597485682b7ec770d1ee75ca30d88c"
+    }
+  ]
 }

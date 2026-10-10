@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 10:56'
-updated_date: '2026-10-10 11:11'
+updated_date: '2026-10-10 11:34'
 labels:
   - init-factory
 dependencies: []
@@ -24,7 +24,7 @@ Run of the init-factory skill.
 - [x] #2 Brief ratified and stored as Backlog doc product-brief
 - [x] #3 Domain and concern facets ratified
 - [x] #4 Stack and architecture ratified: stack.md has no TBD, decisions recorded in init-decisions
-- [ ] #5 Practice packs ratified, vendored, locked and compiled; new packs proposed upstream
+- [x] #5 Practice packs ratified, vendored, locked and compiled; new packs proposed upstream
 - [ ] #6 Environment provisioned and stack overlays written
 - [ ] #7 Backlog seeded with milestones and draft slices
 - [ ] #8 Walking skeleton green: install, migrations, check command, full tests, check-harness, CI
@@ -40,4 +40,6 @@ criterion 2: doc product-brief (doc-1); decisions decision-1 (deploy: browser), 
 criterion 3: facets ratified (accept): domain/music-training (miss), concern/security-web (miss). Central index empty at fetch (commit 6acaf49), so both misses need deep-research in practices phase. Rejected: domain/audio-processing; concern/privacy-gdpr; concern/accessibility. Facet rows recorded in init-decisions doc-2 with ref '-' (classification, not product decision). evidence: practices.py status output (miss, miss); ratified list here.
 
 criterion 4: stack ratified (accept all, 2026-10-10). Stack facets: lang/typescript (datastore none, no framework). decision-5 (stack row set), decision-6 (Supersedes HD-2: no datastore); HD-11 kept. Overrides: meta/product/persistence.md (none). Research: Biome vs ESLint+Prettier and dep-cruiser vs eslint-plugin-boundaries (subagent); Biome rejected for unverified TS 6 coverage. evidence: ! grep -q TBD meta/product/stack.md exit 0; npm ci exit 0; scripts/check.sh exit 0; check-harness exit 0; decisions decision-5, decision-6; init-decisions doc-2 rows. Known gap: jscpd analyzes 0 files until src has a file of 5+ lines (warns, exits 0). Boundary rules probed with temporary slice files and removed.
+
+criterion 5: packs ratified 2026-10-10 (accept all, incl. enforcement plan). Vendored and locked: lang/typescript (26 rules: 18 MUST, 8 SHOULD), domain/music-training (27: 21 MUST, 6 SHOULD), concern/security-web (28: 24 MUST, 4 SHOULD); all new, so local until PRs merge. Enforcement compiled: eslint rules (TS-005, TS-010, SEC-014, SEC-015 incl. no-new-func), tsconfig noUncheckedIndexedAccess (TS-013), .npmrc ignore-scripts=true (SEC-019), SECURITY.md (SEC-026), check-cmd rules appended to scripts/check.sh with forbid helper for negated rules. Test rules (15 music, TS-017) go to seed. Review rules (4 TS, 12 music, 19 security) go to provision overlay. Upstream PRs: lang/typescript CodingSar/GhostInsidePractices#1, domain/music-training #2, concern/security-web #3. evidence: practices.py verify ok (3 packs match lock); scripts/check.sh exit 0; check-harness exit 0; propose exit 0 x3; forbid probe confirmed (unsafe- in index.html fails check). Open: enable private vulnerability reporting on the repo (SECURITY.md points at it); SEC-027 security.txt path not yet written (review, provision). jscpd analyzes 0 files (known gap).
 <!-- SECTION:NOTES:END -->

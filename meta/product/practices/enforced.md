@@ -5,3 +5,49 @@ init-factory compiles each rule below into tool config, a check command, or a te
 
 | Pack | ID | Level | Rule | Enforce |
 |---|---|---|---|---|
+| concern/security-web | SEC-002 | MUST | Keep 'unsafe-inline' and 'unsafe-eval' out of every Content-Security-Policy in index.html. | check-cmd: ! grep -q "unsafe-" index.html |
+| concern/security-web | SEC-012 | MUST | Do not use innerHTML, outerHTML, insertAdjacentHTML or document.write in source code. | check-cmd: ! grep -rnE -e innerHTML -e outerHTML -e insertAdjacentHTML -e "document\.write" src |
+| concern/security-web | SEC-014 | MUST | Do not call eval, and do not call the Function constructor. | lint: eslint no-eval |
+| concern/security-web | SEC-015 | MUST | Do not pass a string to setTimeout or setInterval. | lint: eslint no-implied-eval |
+| concern/security-web | SEC-018 | MUST | Commit package-lock.json and install with npm ci in CI and in every deploy job. | check-cmd: test -f package-lock.json |
+| concern/security-web | SEC-019 | MUST | Set ignore-scripts=true in .npmrc, and review each package that needs an install script before adding an exception. | check-cmd: grep -qx "ignore-scripts=true" .npmrc |
+| concern/security-web | SEC-023 | MUST | Pin every third-party action to a full-length commit SHA from its upstream repository. | check-cmd: ! grep -rnE "uses: [^#]+@v[0-9]" .github/workflows |
+| concern/security-web | SEC-024 | MUST | Do not use the pull_request_target trigger, and never check out pull request code in a workflow that holds write scopes or secrets. | check-cmd: ! grep -rn pull_request_target .github/workflows |
+| concern/security-web | SEC-026 | MUST | Commit SECURITY.md in the repository root or in .github, naming the supported versions and a private reporting route. | check-cmd: test -f SECURITY.md -o -f .github/SECURITY.md |
+| domain/music-training | DOM-001 | MUST | Compute a pitch deviation in cents as 1200 times log2 of measured over target frequency, and display it against the active reference. | test |
+| domain/music-training | DOM-002 | MUST | Derive every target frequency as R times 2 to the power k/12, with k the semitone offset from A4 and R the active reference. | test |
+| domain/music-training | DOM-003 | MUST | Default the reference to A4 = 440 Hz, let the user change it, and recompute the target table from the new reference. | test |
+| domain/music-training | DOM-004 | MUST | Store standard tuning targets at A4 = 440 Hz as E2 82.41, A2 110, D3 146.83, G3 196, B3 246.94, E4 329.63 Hz. | test |
+| domain/music-training | DOM-005 | MUST | Represent a tuning preset as six string entries (string, note, semitone offset) and change only the entries that the preset changes; drop D changes only the low string to D. | test |
+| domain/music-training | DOM-006 | MUST | Set the detector's frequency band to reach the lowest target of the active preset, about 73.4 Hz for drop D. | test |
+| domain/music-training | DOM-008 | SHOULD | Check sub-octave and super-octave candidates against the periodicity measure before reporting a pitch, to reduce octave errors. | test |
+| domain/music-training | DOM-010 | MUST | Fill the time-domain buffer with exactly fftSize samples, where fftSize is a power of two from 32 to 32768. | test |
+| domain/music-training | DOM-011 | MUST | Show "wrong string or octave" instead of a deviation when a reading is more than 50 cents from the selected target. | test |
+| domain/music-training | DOM-013 | MUST | Start microphone capture only in a secure context, and check that navigator.mediaDevices exists before showing the start control. | test |
+| domain/music-training | DOM-014 | MUST | Show pending, denied (NotAllowedError), no device (NotFoundError) and constraint failure (OverconstrainedError) as separate states. | test |
+| domain/music-training | DOM-018 | MUST | Position notes and judge hits from AudioContext.currentTime, and use requestAnimationFrame only for drawing. | test |
+| domain/music-training | DOM-020 | MUST | Pause the practice view by suspending the AudioContext, so notes freeze with the audio clock. | test |
+| domain/music-training | DOM-021 | SHOULD | Judge hits against heard time, currentTime minus baseLatency and outputLatency, plus a user calibration offset, and never edit stored note times to compensate. | test |
+| domain/music-training | DOM-023 | MUST | Fix each note's hit time when the note is created, and change only the drawn distance per millisecond when the speed toggle changes. | test |
+| lang/typescript | TS-001 | MUST | Keep `"strict": true` in tsconfig.json. | check-cmd: grep -q '"strict": true' tsconfig.json |
+| lang/typescript | TS-002 | MUST | Keep `"noEmit": true` in tsconfig.json so tsc only type-checks and Vite emits the bundle. | check-cmd: grep -q '"noEmit": true' tsconfig.json |
+| lang/typescript | TS-003 | MUST | Keep `"isolatedModules": true` in tsconfig.json so each file transpiles on its own under Vite. | check-cmd: grep -q '"isolatedModules": true' tsconfig.json |
+| lang/typescript | TS-004 | MUST | Set `"moduleResolution": "bundler"` in tsconfig.json. | check-cmd: grep -q '"moduleResolution": "bundler"' tsconfig.json |
+| lang/typescript | TS-005 | SHOULD | Mark type-only imports with `import type` or an inline `type` modifier. | lint: @typescript-eslint/consistent-type-imports (not in recommended; enable explicitly) |
+| lang/typescript | TS-006 | MUST | Re-export a type with `export type`, never with a plain `export`. | check-cmd: npx tsc --noEmit |
+| lang/typescript | TS-007 | MUST | Do not write `any`; type unknown values as `unknown` and narrow them before use. | lint: @typescript-eslint/no-explicit-any |
+| lang/typescript | TS-008 | MUST | Narrow a caught value with `instanceof` or a type guard before reading its `message`. | check-cmd: npx tsc --noEmit |
+| lang/typescript | TS-009 | MUST | Give every `@ts-expect-error` a written reason and never use `@ts-ignore`. | lint: @typescript-eslint/ban-ts-comment |
+| lang/typescript | TS-010 | SHOULD | Avoid the non-null assertion operator `!`; narrow the value with a check instead. | lint: @typescript-eslint/no-non-null-assertion (not in recommended; enable explicitly) |
+| lang/typescript | TS-011 | MUST | Switch over every member of a discriminated union, with a default that assigns the leftover value to a `never`-typed constant. | check-cmd: npx tsc --noEmit |
+| lang/typescript | TS-012 | MUST | Remove unused variables, imports and parameters instead of leaving them in committed code. | lint: @typescript-eslint/no-unused-vars |
+| lang/typescript | TS-013 | SHOULD | Set `"noUncheckedIndexedAccess": true` in tsconfig.json and handle `undefined` on reads from index signatures and records. | check-cmd: grep -q '"noUncheckedIndexedAccess": true' tsconfig.json |
+| lang/typescript | TS-014 | SHOULD | Keep ESLint on typescript-eslint's non-type-checked presets; eslint.config.js must not reference any TypeChecked preset. | check-cmd: ! grep -q TypeChecked eslint.config.js |
+| lang/typescript | TS-016 | MUST | Keep test files inside the tsconfig include so `npx tsc --noEmit` type-checks them, because Vitest type-checks only in typecheck mode. | check-cmd: npx tsc --noEmit |
+| lang/typescript | TS-017 | SHOULD | Assert the types of public contracts with `expectTypeOf` in Vitest test files. | test |
+| lang/typescript | TS-020 | MUST | Run `prettier --check` in the check script and fail on unformatted files. | check-cmd: grep -q "prettier --check" scripts/check.sh |
+| lang/typescript | TS-021 | MUST | Declare import boundaries as dependency-cruiser forbidden rules and fail the check on any violation. | check-cmd: npm run boundaries |
+| lang/typescript | TS-022 | MUST | Remove unused files, exports and dependencies that knip reports. | check-cmd: npx knip |
+| lang/typescript | TS-023 | SHOULD | Measure copy-paste duplication in src with jscpd and fail the check above the threshold set in package.json. | check-cmd: npm run duplication |
+| lang/typescript | TS-024 | MUST | Run the toolchain on Node.js 24 or later, the LTS line the stack ratifies (24.21.0). | check-cmd: node -e "process.exit(Number(process.versions.node.split('.')[0])>=24?0:1)" |
+| lang/typescript | TS-025 | MUST | Do not set `ignoreDeprecations` in tsconfig.json; fix deprecated options so the project survives TypeScript 7. | check-cmd: ! grep -q ignoreDeprecations tsconfig.json |
