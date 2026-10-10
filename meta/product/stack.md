@@ -20,7 +20,7 @@ Status: set by init-factory, TASK-1.
 | test command (targeted, takes a path) | npx vitest run <path> |
 | check command | scripts/check.sh |
 | fix command | npm run fix |
-| dependencies approved | typescript, vite, vitest, eslint, @eslint/js, typescript-eslint, prettier, dependency-cruiser, jscpd, knip, @types/node |
+| dependencies approved | typescript, vite, vitest, eslint, @eslint/js, typescript-eslint, prettier, dependency-cruiser, jscpd, knip, @types/node, jsdom (TASK-20, dev only, DOM tests) |
 
 Notes, not cells:
 
