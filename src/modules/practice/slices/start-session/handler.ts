@@ -23,6 +23,8 @@ export interface PracticeSession {
   resume(): void;
 }
 
+const LEAD_IN_MS = 3000;
+
 export function handler(
   sequence: readonly NoteSpec[],
   clock: Clock,
@@ -33,7 +35,7 @@ export function handler(
     index,
     string: spec.string,
     fret: spec.fret,
-    hitTime: startTime + (index + 1) * stepMs,
+    hitTime: startTime + LEAD_IN_MS + index * stepMs,
   }));
 
   let pausedTotal = 0;

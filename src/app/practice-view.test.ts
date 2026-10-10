@@ -21,8 +21,8 @@ function fakeClock(start: number) {
   };
 }
 
-// Tempo 60 is one beat per 1000 ms. Started at 0, the notes are hit at
-// 1000, 2000 and 3000 ms, on strings 1, 2 and 6.
+// Tempo 60 is one beat per 1000 ms. Started at 0, the first note is hit at
+// 3000 ms (3 s lead-in), then 4000 and 5000 ms, on strings 1, 2 and 6.
 const song: Song = {
   title: "T",
   tempo: 60,
@@ -50,7 +50,7 @@ describe("practice-view", () => {
     practice.selectSong(0);
     practice.start();
 
-    clock.time = 1000;
+    clock.time = 3000;
     const placed = practice.frame();
 
     expect(placed.map((note) => note.row)).toEqual([0, 1, 5]);
@@ -100,13 +100,13 @@ describe("practice-view", () => {
     // 500 ms before the first hit. Faster covers more pixels per millisecond,
     // so at that time the note is higher on screen (smaller y) than at the
     // steady speed.
-    steadyClock.time = 500;
-    clock.time = 500;
+    steadyClock.time = 2500;
+    clock.time = 2500;
     expect(firstY(practice.frame())).toBeLessThan(firstY(steady.frame()));
 
     // At the hit time the note is on the line, at both speeds.
-    steadyClock.time = 1000;
-    clock.time = 1000;
+    steadyClock.time = 3000;
+    clock.time = 3000;
     expect(firstY(practice.frame())).toBe(400);
     expect(firstY(steady.frame())).toBe(400);
   });
@@ -125,19 +125,19 @@ describe("practice-view", () => {
     practice.slower();
 
     // 500 ms before the first hit, the note is where it is at the steady speed.
-    steadyClock.time = 500;
-    clock.time = 500;
+    steadyClock.time = 2500;
+    clock.time = 2500;
     expect(firstY(practice.frame())).toBe(firstY(steady.frame()));
   });
 
-  // Timing window 150 ms. The first song note (string 1 fret 0) is hit at 1000 ms.
+  // Timing window 150 ms. The first song note (string 1 fret 0) is hit at 3000 ms.
   it("TASK-14#1 a pitch of the note in play at its hit time is recorded, and that note is judged hit", () => {
     const clock = fakeClock(0);
     const practice = mountPractice([song], clock, 400);
     practice.selectSong(0);
     practice.start();
 
-    clock.time = 1000;
+    clock.time = 3000;
     practice.hear(329.63, openHz);
 
     expect(practice.judgments()).toEqual(["hit", "pending", "pending"]);
@@ -149,9 +149,9 @@ describe("practice-view", () => {
     practice.selectSong(0);
     practice.start();
 
-    clock.time = 1000;
+    clock.time = 3000;
     practice.hear(60, openHz);
-    clock.time = 1151;
+    clock.time = 3151;
 
     expect(practice.judgments()).toEqual(["missed", "pending", "pending"]);
   });
@@ -163,7 +163,7 @@ describe("practice-view", () => {
     practice.start();
 
     // 100 ms after the hit time, inside the 150 ms window.
-    clock.time = 1100;
+    clock.time = 3100;
     practice.hear(329.63, openHz);
 
     expect(practice.judgments()).toEqual(["hit", "pending", "pending"]);
@@ -176,7 +176,7 @@ describe("practice-view", () => {
     practice.start();
 
     // 151 ms after the hit time, one millisecond past the 150 ms window.
-    clock.time = 1151;
+    clock.time = 3151;
     practice.hear(329.63, openHz);
 
     expect(practice.judgments()).toEqual(["missed", "pending", "pending"]);
@@ -187,11 +187,11 @@ describe("practice-view", () => {
     const practice = mountPractice([song], clock, 400);
     practice.selectSong(0);
     practice.start();
-    clock.time = 1000;
+    clock.time = 3000;
     practice.hear(329.63, openHz);
 
     practice.start();
-    clock.time = 1000;
+    clock.time = 3000;
 
     expect(practice.judgments()).toEqual(["pending", "pending", "pending"]);
   });
@@ -208,10 +208,10 @@ describe("practice-view", () => {
     const practice = mountPractice([song], clock, 400);
     practice.selectSong(0);
     practice.start();
-    clock.time = 1000;
+    clock.time = 3000;
     practice.hear(329.63, openHz);
-    // 2151 ms: the first note is hit, the second is past its window (2000 + 150) and missed.
-    clock.time = 2151;
+    // 4151 ms: the first note is hit at 3000, the second (hit at 4000, window end 4150) is missed.
+    clock.time = 4151;
 
     expect(practice.judgments()).toEqual(["hit", "missed", "pending"]);
     expect(practice.tally().hits).toBe(1);
@@ -228,7 +228,7 @@ describe("practice-view", () => {
     const practice = mountPractice([song, otherSong], clock, 400);
     practice.selectSong(0);
     practice.start();
-    clock.time = 1000;
+    clock.time = 3000;
     practice.hear(329.63, openHz);
 
     practice.selectSong(1);
