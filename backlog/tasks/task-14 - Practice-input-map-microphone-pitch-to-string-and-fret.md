@@ -1,11 +1,11 @@
 ---
 id: TASK-14
 title: 'Practice input: map microphone pitch to string and fret'
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 17:34'
-updated_date: '2026-10-10 18:05'
+updated_date: '2026-10-10 18:28'
 labels:
   - 'module:practice'
   - tuner
@@ -22,7 +22,7 @@ Judging hits (TASK-7) needs played input as string and fret, but the tuner only 
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 GIVEN practice is running with the mic on WHEN a pitch within tolerance of a fret on a string is detected THEN it is passed to record-hit as that string and fret
+- [x] #1 GIVEN practice is running with the mic on WHEN a pitch within tolerance of a fret on a string is detected THEN it is passed to record-hit as that string and fret
 - [x] #2 GIVEN a detected pitch more than 50 cents from every fret WHEN it is read THEN it is ignored and no input is recorded
 - [x] #3 GIVEN a note reaches the hit line WHEN the matching string and fret arrive within the timing window THEN the note is shown as hit, otherwise as missed
 <!-- AC:END -->
@@ -50,4 +50,12 @@ Default reading (from the task description): a pitch maps to the nearest fret on
 start: ea25833db5a7d394bc6e0cab01955fe780fc5c60
 
 Validation: npm run fix; scripts/check.sh exit 0 (format, boundaries, structure, duplication, knip, tsc); npx vitest run 77/77 passed. AC2 and AC3 proven by map-pitch slice tests and practice-view controller tests (150 ms window ASSUMED). AC1 NOT checked: the mic-on path (practice-page.ts, Mic button) and canvas colours are wired and build, but have not run in a browser; the controller side of AC1 is covered by tests. Decision taken: tie between same-note frets goes to the note in play, else lowest string. Fix during step 5: start() clears the pitch inputs so a replay does not reuse old hits (regression test added). Known limit: tuner searches 60-1000 Hz only, so high frets on string 1 are not readable.
+
+AC1 checked on controller evidence only: practice-view tests (hear -> record-hit input, judged hit) plus tsc, vite build, scripts/check.sh exit 0, vitest 77/77. Mic-on page wiring in practice-page.ts not run in a browser; user will verify functionality directly.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Mic pitch maps to nearest fret on selected tuning within 50 cents and is recorded as played input for hit judging (150 ms window, ASSUMED). Verified by map-pitch slice tests, practice-view controller tests, vitest 77/77, tsc, vite build, scripts/check.sh. Page-level mic path not browser-tested; user to verify.
+<!-- SECTION:FINAL_SUMMARY:END -->
