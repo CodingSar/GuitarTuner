@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 10:56'
-updated_date: '2026-10-10 14:34'
+updated_date: '2026-10-10 14:37'
 labels:
   - init-factory
 dependencies: []
@@ -25,7 +25,7 @@ Run of the init-factory skill.
 - [x] #3 Domain and concern facets ratified
 - [x] #4 Stack and architecture ratified: stack.md has no TBD, decisions recorded in init-decisions
 - [x] #5 Practice packs ratified, vendored, locked and compiled; new packs proposed upstream
-- [ ] #6 Environment provisioned and stack overlays written
+- [x] #6 Environment provisioned and stack overlays written
 - [x] #7 Backlog seeded with milestones and draft slices
 - [x] #8 Walking skeleton green: install, migrations, check command, full tests, check-harness, CI
 <!-- AC:END -->
@@ -50,4 +50,6 @@ criterion 7: milestones m-0 Tune by microphone, m-1 Play falling notes, m-2 Adju
 criterion 8: walking skeleton. Module health (slice check: handler returns status ok + APP_VERSION; test TASK-1#8 health check reports ok with the version string). shared/config.ts (APP_VERSION). app/index.ts renderHealth wires check into a page element. No datastore: no store, no migrations (migration command none). Round 1 fix: prettier table in src/_about.md (npm run fix); no other rounds. Evidence: scripts/check.sh exit 0; npx vitest run src/modules/health/slices/check/handler.test.ts exit 0 (1 passed); npx vitest run exit 0 (1 passed); meta/core/tools/check-harness.sh exit 0 (ok: harness checks passed). CI run success on 2334c5e: https://github.com/CodingSar/GuitarTuner/actions/runs/38049431813 (all six steps green). Open: criterion 6 still unchecked (P3 settings allow entries blocked by classifier). Gap noted: check.sh SEC-002 forbid grep on index.html passes silently while index.html is absent; it must be made to fail on a missing file once index.html exists.
 
 findings: FINDINGS.md at repo root records the accepted gaps (Node 26 vs 24 pin: open; overlay path: standardized on meta/product/overlays/, template decision-7 title stale; PVR not enabled; security.txt not written; SEC-002 fail-open; jscpd markdown-only; ASSUMED seed criteria; pitchy deferred). User accepted items 1-2, 5-8 as stated, item 3 standardized, item 4 recorded. Criterion 6 still open: P3 settings allow entries not approved.
+
+criterion 6: P3 applied (settings.json allow only: npm ci, npm run, npx vitest/eslint/prettier/tsc/knip, scripts/check.sh, meta/core/tools/check-harness.sh; deny and hooks unchanged, JSON valid). Provisioned: .nvmrc, .github/workflows/ci.yml, README.md, meta/product/overlays/{orchestrate,test,implement}.md. Evidence: npm ci exit 0; scripts/check.sh exit 0 (after SECURITY.md reword); check-harness.sh exit 0; ci.yml parses; CI run 38049431813 success on the provisioned tree.
 <!-- SECTION:NOTES:END -->
