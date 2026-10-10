@@ -4,10 +4,11 @@ description: Tuning module. Holds the tuning presets and the reference pitch tha
 
 Purpose: name the target note of each string for the chosen tuning.
 
-Public API: `selectPreset`, `targetsFor`, `DEFAULT_REFERENCE_HZ`.
+Public API: `selectPreset`, `setReference`, `targetsFor`, `DEFAULT_REFERENCE_HZ`.
 
 Tables owned: none.
 
 Slices:
 
 - `select-preset`: returns a tuning preset by name; standard by default, drop D changes only the low string to D2.
+- `set-reference`: accepts a reference pitch for A4 in hertz; refuses zero, negative and non-numbers with a RangeError.
