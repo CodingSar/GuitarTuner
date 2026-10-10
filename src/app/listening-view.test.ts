@@ -3,6 +3,9 @@ import type { MicSource, MicStream, Target } from "../modules/tuner";
 import { mountListening } from "./listening-view";
 import type { Control, ListeningView } from "./listening-view";
 
+// A page with secure context and navigator.mediaDevices, so start is shown.
+const supported = { secure: true, mediaDevices: true };
+
 // Fake browser microphone. open() returns a promise the test settles.
 function fakeMic() {
   let resolveOpen: (stream: MicStream) => void = () => {};
@@ -78,14 +81,14 @@ function sine(hz: number, length: number): Float32Array {
 describe("listening view", () => {
   it("TASK-11#1 status reads Idle and a Start listening control is shown after the tuner starts", () => {
     const { view, status, start } = fakeView();
-    mountListening(view, fakeMic().source);
+    mountListening(view, fakeMic().source, undefined, undefined, supported);
     expect(status.textContent).toBe("Idle");
     expect(start.hidden).toBe(false);
   });
 
   it("TASK-11#2 status reads Waiting for microphone permission when Start listening is pressed before the microphone is granted", () => {
     const { view, status, start } = fakeView();
-    mountListening(view, fakeMic().source);
+    mountListening(view, fakeMic().source, undefined, undefined, supported);
     start.click();
     expect(status.textContent).toBe("Waiting for microphone permission");
   });
@@ -93,7 +96,7 @@ describe("listening view", () => {
   it("TASK-11#3 status reads Microphone access denied and no pitch readout appears when the player has denied microphone access", async () => {
     const { view, status, start, readout } = fakeView();
     const mic = fakeMic();
-    mountListening(view, mic.source);
+    mountListening(view, mic.source, undefined, undefined, supported);
     mic.deny();
     start.click();
     await mic.settled();
@@ -104,7 +107,7 @@ describe("listening view", () => {
   it("TASK-11#4 status reads Idle and the microphone is released when the player presses Stop while listening is running", async () => {
     const { view, status, start, stop } = fakeView();
     const mic = fakeMic();
-    mountListening(view, mic.source);
+    mountListening(view, mic.source, undefined, undefined, supported);
     start.click();
     mic.grant();
     await mic.settled();
@@ -117,9 +120,15 @@ describe("listening view", () => {
     const { view, start, readout } = fakeView();
     const mic = fakeMic();
     const frames: Array<() => void> = [];
-    mountListening(view, mic.source, (frame) => {
-      frames.push(frame);
-    });
+    mountListening(
+      view,
+      mic.source,
+      (frame) => {
+        frames.push(frame);
+      },
+      undefined,
+      supported,
+    );
     start.click();
     mic.grant({
       release: () => {},
@@ -149,6 +158,7 @@ describe("listening view", () => {
         frames.push(frame);
       },
       () => dropD,
+      supported,
     );
     start.click();
     mic.grant({
@@ -198,7 +208,6 @@ function countingMic() {
 
 const noSchedule = (): void => {};
 const noTargets = (): readonly Target[] => [];
-const supported = { secure: true, mediaDevices: true };
 
 describe("listening view (TASK-10)", () => {
   it("TASK-10#10 Microphone capture starts only in a secure context, and the start control appears only when navigator.mediaDevices exists", () => {
