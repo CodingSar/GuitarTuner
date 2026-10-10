@@ -2,8 +2,8 @@
 description: Source catalog. One row per module. structure.py fails when a module is not named here in backticks.
 ---
 
-| Module   | Purpose                                                           |
-| -------- | ----------------------------------------------------------------- |
-| `health` | Reports that the app runs. Walking-skeleton proof; no datastore.  |
+| Module     | Purpose                                                            |
+| ---------- | ------------------------------------------------------------------ |
+| `health`   | Reports that the app runs. Walking-skeleton proof; no datastore.   |
 | `practice` | Turns a string and fret sequence into falling notes. No datastore. |
-| `tuner`  | Reads the guitar through the microphone for tuning. No datastore. |
+| `tuner`    | Reads the guitar through the microphone for tuning. No datastore.  |

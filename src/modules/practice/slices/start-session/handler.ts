@@ -28,5 +28,41 @@ export function handler(
   clock: Clock,
   stepMs: number,
 ): PracticeSession {
-  throw new Error("not implemented");
+  const startTime = clock.now();
+  const notes: readonly FallingNote[] = sequence.map((spec, index) => ({
+    index,
+    string: spec.string,
+    fret: spec.fret,
+    hitTime: startTime + (index + 1) * stepMs,
+  }));
+
+  let pausedTotal = 0;
+  let pausedAt: number | undefined;
+
+  const audioNow = (): number => {
+    const now = pausedAt === undefined ? clock.now() : pausedAt;
+    return now - pausedTotal;
+  };
+
+  return {
+    notes,
+    timeToHit(index: number): number {
+      const note = notes[index];
+      if (note === undefined) {
+        throw new RangeError(`no note at index ${index}`);
+      }
+      return note.hitTime - audioNow();
+    },
+    pause(): void {
+      if (pausedAt === undefined) {
+        pausedAt = clock.now();
+      }
+    },
+    resume(): void {
+      if (pausedAt !== undefined) {
+        pausedTotal += clock.now() - pausedAt;
+        pausedAt = undefined;
+      }
+    },
+  };
 }
