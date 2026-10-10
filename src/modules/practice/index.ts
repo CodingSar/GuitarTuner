@@ -36,3 +36,9 @@ export {
 } from "./slices/layout-falling-notes/handler";
 export { handler as mapPitch } from "./slices/map-pitch/handler";
 export { type Song, type SongNote } from "./model";
+export {
+  handler as validateTempo,
+  type TempoResult,
+} from "./slices/validate-tempo/handler";
+export { TEMPO_MIN, TEMPO_MAX } from "./model";
+export { handler as adjustTempo } from "./slices/adjust-tempo/handler";

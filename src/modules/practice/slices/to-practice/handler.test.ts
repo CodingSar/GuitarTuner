@@ -23,4 +23,10 @@ describe("to-practice", () => {
     ]);
     expect(practice.stepMs).toBe(500);
   });
+
+  it("TASK-20#2 GIVEN the player chose a whole-number BPM of 90 WHEN the song is converted for practice THEN the step length is 60000 divided by 90 ms", () => {
+    const practice = handler(song, 90);
+
+    expect(practice.stepMs).toBe(60000 / 90);
+  });
 });

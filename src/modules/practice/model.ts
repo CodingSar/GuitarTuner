@@ -10,3 +10,7 @@ export interface Song {
   readonly tempo: number;
   readonly notes: readonly SongNote[];
 }
+
+// The tempo range the player may set, in beats per minute.
+export const TEMPO_MIN = 20;
+export const TEMPO_MAX = 240;

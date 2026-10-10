@@ -258,4 +258,25 @@ describe("practice-view", () => {
       { row: 4, fret: 0 },
     ]);
   });
+
+  it("TASK-20#1 GIVEN a song is chosen WHEN the practice page shows it THEN the default tempo is that song's tempo, 60", () => {
+    const clock = fakeClock(0);
+    const practice = mountPractice([song], clock, 400);
+    practice.selectSong(0);
+
+    expect(practice.defaultTempo()).toBe(60);
+  });
+
+  it("TASK-20#2 GIVEN the player types the whole-number BPM 90 WHEN Start is pressed THEN the second note is hit 60000 divided by 90 ms after the first", () => {
+    const clock = fakeClock(0);
+    const practice = mountPractice([song], clock, 400);
+    practice.selectSong(0);
+    practice.start(90);
+
+    // The first note is hit at 3000 ms. The second is one step of 60000 / 90 ms later.
+    clock.time = 3000 + 60000 / 90;
+    const placed = practice.frame();
+
+    expect(placed[1]?.y).toBeCloseTo(400);
+  });
 });

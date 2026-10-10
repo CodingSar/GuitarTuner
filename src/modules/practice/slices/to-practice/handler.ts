@@ -1,6 +1,9 @@
 import type { Song, SongNote } from "../../model";
 
-export function handler(song: Song): {
+export function handler(
+  song: Song,
+  tempo?: number,
+): {
   readonly sequence: readonly SongNote[];
   readonly stepMs: number;
 } {

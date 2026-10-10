@@ -25,7 +25,9 @@ export interface PracticeClock {
 // and read the notes to draw.
 export interface PracticeController {
   selectSong(index: number): void;
-  start(): void;
+  // The tempo of the chosen song, in BPM.
+  defaultTempo(): number;
+  start(tempo?: number): void;
   pause(): void;
   resume(): void;
   slower(): void;
@@ -87,7 +89,10 @@ export function mountPractice(
       chosen = songs[index];
       chosenIndex = index;
     },
-    start(): void {
+    defaultTempo(): number {
+      throw new Error("not implemented");
+    },
+    start(tempo?: number): void {
       if (chosen === undefined) return;
       const { sequence, stepMs } = toPractice(chosen);
       session = startSession(sequence, clock, stepMs);
