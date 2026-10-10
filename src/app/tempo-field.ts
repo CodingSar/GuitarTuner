@@ -1,3 +1,5 @@
+import { adjustTempo, validateTempo } from "../modules/practice";
+
 // The BPM field and its -/+ and reset buttons on the practice page. The field
 // holds the tempo the session starts at; Start checks it before it begins.
 export interface TempoFieldElements {
@@ -14,9 +16,43 @@ export interface TempoPractice {
   start(tempo?: number): void;
 }
 
+const STEP = 5;
+
 export function mountTempoField(
   elements: TempoFieldElements,
   practice: TempoPractice,
 ): { showDefault(): void; startFromField(): void } {
-  throw new Error("not implemented");
+  const { input, error, minus, plus, reset } = elements;
+
+  function showDefault(): void {
+    input.value = String(practice.defaultTempo());
+    error.textContent = "";
+  }
+
+  function startFromField(): void {
+    const result = validateTempo(input.value);
+    if (!result.ok) {
+      error.textContent = result.reason;
+      return;
+    }
+    error.textContent = "";
+    input.value = String(result.bpm);
+    practice.start(result.bpm);
+  }
+
+  function nudge(delta: number): void {
+    const result = validateTempo(input.value);
+    if (!result.ok) {
+      error.textContent = result.reason;
+      return;
+    }
+    error.textContent = "";
+    input.value = String(adjustTempo(result.bpm, delta));
+  }
+
+  minus.addEventListener("click", () => nudge(-STEP));
+  plus.addEventListener("click", () => nudge(STEP));
+  reset.addEventListener("click", () => showDefault());
+
+  return { showDefault, startFromField };
 }
