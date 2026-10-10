@@ -1,7 +1,7 @@
 ---
-id: DRAFT-2
+id: TASK-3
 title: 'tuning/set-reference: Set the reference pitch'
-status: Draft
+status: To Do
 assignee: []
 created_date: '2026-10-10 11:41'
 labels:

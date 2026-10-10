@@ -1,7 +1,7 @@
 ---
-id: DRAFT-5
+id: TASK-6
 title: 'practice/start-session: Start a falling-note practice session'
-status: Draft
+status: To Do
 assignee: []
 created_date: '2026-10-10 11:41'
 labels:

@@ -1,7 +1,7 @@
 ---
-id: DRAFT-3
+id: TASK-4
 title: 'tuner/start-listening: Start and stop microphone listening'
-status: Draft
+status: To Do
 assignee: []
 created_date: '2026-10-10 11:41'
 labels:

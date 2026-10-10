@@ -1,7 +1,7 @@
 ---
-id: DRAFT-6
+id: TASK-7
 title: 'practice/record-hit: Record a hit or miss for each note'
-status: Draft
+status: To Do
 assignee: []
 created_date: '2026-10-10 11:41'
 labels:

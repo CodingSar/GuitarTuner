@@ -1,7 +1,7 @@
 ---
-id: DRAFT-9
+id: TASK-10
 title: Practice tests
-status: Draft
+status: To Do
 assignee: []
 created_date: '2026-10-10 11:41'
 labels: []

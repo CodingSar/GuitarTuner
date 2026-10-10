@@ -1,7 +1,7 @@
 ---
-id: DRAFT-1
+id: TASK-2
 title: 'tuning/select-preset: Select a tuning preset'
-status: Draft
+status: To Do
 assignee: []
 created_date: '2026-10-10 11:41'
 labels:

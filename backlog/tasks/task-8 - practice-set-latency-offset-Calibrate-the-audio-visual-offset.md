@@ -1,7 +1,7 @@
 ---
-id: DRAFT-7
+id: TASK-8
 title: 'practice/set-latency-offset: Calibrate the audio-visual offset'
-status: Draft
+status: To Do
 assignee: []
 created_date: '2026-10-10 11:41'
 labels:

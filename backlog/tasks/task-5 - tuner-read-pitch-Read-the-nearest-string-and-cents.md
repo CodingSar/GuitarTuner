@@ -1,7 +1,7 @@
 ---
-id: DRAFT-4
+id: TASK-5
 title: 'tuner/read-pitch: Read the nearest string and cents'
-status: Draft
+status: To Do
 assignee: []
 created_date: '2026-10-10 11:41'
 labels:
