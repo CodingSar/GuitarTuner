@@ -269,7 +269,40 @@ main:has(#stage) > :not(button) {
   font-variant-numeric: tabular-nums;
 }
 
+nav[aria-label="Pages"] {
+  display: flex;
+  gap: 8px;
+  width: 320px;
+  max-width: 100%;
+}
+
+.nav-button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 0;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.nav-button[aria-current="page"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--ground);
+}
+
 @media (min-width: 900px) {
+  main:has(#panel) > nav {
+    grid-column: 1 / -1;
+  }
+
   main:has(#panel) {
     display: grid;
     grid-template-columns: 1fr 1fr;
