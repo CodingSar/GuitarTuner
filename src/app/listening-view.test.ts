@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { MicSource, MicStream } from "../modules/tuner";
+import type { MicSource, MicStream, Target } from "../modules/tuner";
 import { mountListening } from "./listening-view";
 import type { Control, ListeningView } from "./listening-view";
 
@@ -128,5 +128,35 @@ describe("listening view", () => {
     await mic.settled();
     frames.at(-1)?.();
     expect(readout.textContent).toContain("A2");
+  });
+
+  it("TASK-2#2 the readout names D2 when a steady 73.42 Hz tone is heard with drop D selected", async () => {
+    const { view, start, readout } = fakeView();
+    const mic = fakeMic();
+    const frames: Array<() => void> = [];
+    const dropD: readonly Target[] = [
+      { label: "D2", hz: 73.42 },
+      { label: "A2", hz: 110 },
+      { label: "D3", hz: 146.83 },
+      { label: "G3", hz: 196 },
+      { label: "B3", hz: 246.94 },
+      { label: "E4", hz: 329.63 },
+    ];
+    mountListening(
+      view,
+      mic.source,
+      (frame) => {
+        frames.push(frame);
+      },
+      () => dropD,
+    );
+    start.click();
+    mic.grant({
+      release: () => {},
+      analysis: { sampleRate: 44100, samples: () => sine(73.42, 4096) },
+    } as MicStream);
+    await mic.settled();
+    frames.at(-1)?.();
+    expect(readout.textContent).toMatch(/^D2/);
   });
 });
