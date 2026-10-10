@@ -90,11 +90,12 @@ export function mountPractice(
       chosenIndex = index;
     },
     defaultTempo(): number {
-      throw new Error("not implemented");
+      if (chosen === undefined) throw new Error("no song chosen");
+      return chosen.tempo;
     },
     start(tempo?: number): void {
       if (chosen === undefined) return;
-      const { sequence, stepMs } = toPractice(chosen);
+      const { sequence, stepMs } = toPractice(chosen, tempo);
       session = startSession(sequence, clock, stepMs);
       inputs.length = 0;
       playingIndex = chosenIndex;
