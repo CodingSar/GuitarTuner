@@ -11,3 +11,4 @@ Tables owned: none.
 Slices:
 
 - `start-listening`: opens the microphone and reports pending, listening, or denied; stop releases it.
+- `read-pitch`: reads the nearest target string and its deviation in cents from samples; no reliable pitch when the input is not periodic enough.
