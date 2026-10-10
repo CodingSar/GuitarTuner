@@ -16,10 +16,21 @@
     <main>
       <h1>Guitar practice</h1>
       <p><a href="index.html">Tuner</a></p>
-      <label>
-        Song
-        <select id="song"></select>
-      </label>
+      <div id="songs" class="song-cards"></div>
+      <div class="tally">
+        <div class="readout">
+          <span class="readout-label">Hits</span
+          ><span id="hits" class="readout-value">0</span>
+        </div>
+        <div class="readout">
+          <span class="readout-label">Missed</span
+          ><span id="missed" class="readout-value">0</span>
+        </div>
+        <div class="readout">
+          <span class="readout-label">Streak</span
+          ><span id="streak" class="readout-value">0</span>
+        </div>
+      </div>
       <button id="start" type="button">Start</button>
       <button id="pause" type="button">Pause</button>
       <button id="resume" type="button">Resume</button>
