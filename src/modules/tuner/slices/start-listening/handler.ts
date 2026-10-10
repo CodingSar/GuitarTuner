@@ -20,5 +20,42 @@ export function handler(
   mic: MicSource,
   onState: (state: ListeningState) => void,
 ): Listener {
-  throw new Error("not implemented");
+  let state: ListeningState = "pending";
+  let stopped = false;
+  let stream: MicStream | undefined;
+
+  const set = (next: ListeningState) => {
+    state = next;
+    onState(next);
+  };
+
+  set("pending");
+
+  const ready = mic.open().then(
+    (opened) => {
+      if (stopped) {
+        opened.release();
+        return;
+      }
+      stream = opened;
+      set("listening");
+    },
+    (error: unknown) => {
+      if ((error as Error | undefined)?.name !== "NotAllowedError") throw error;
+      set("denied");
+    },
+  );
+
+  return {
+    get state() {
+      return state;
+    },
+    ready,
+    stop() {
+      stopped = true;
+      stream?.release();
+      stream = undefined;
+      set("idle");
+    },
+  };
 }
