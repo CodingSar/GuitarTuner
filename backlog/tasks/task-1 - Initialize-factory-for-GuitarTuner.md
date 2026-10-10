@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 10:56'
-updated_date: '2026-10-10 11:41'
+updated_date: '2026-10-10 11:44'
 labels:
   - init-factory
 dependencies: []
@@ -27,7 +27,7 @@ Run of the init-factory skill.
 - [x] #5 Practice packs ratified, vendored, locked and compiled; new packs proposed upstream
 - [ ] #6 Environment provisioned and stack overlays written
 - [x] #7 Backlog seeded with milestones and draft slices
-- [ ] #8 Walking skeleton green: install, migrations, check command, full tests, check-harness, CI
+- [x] #8 Walking skeleton green: install, migrations, check command, full tests, check-harness, CI
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -46,4 +46,6 @@ criterion 5: packs ratified 2026-10-10 (accept all, incl. enforcement plan). Ven
 criterion 6 (partial): provisioned .nvmrc, .github/workflows/ci.yml (SHAs pinned, permissions contents read, no pull_request_target), README.md (product), overlays orchestrate/test/implement under meta/product/overlays/. BLOCKED: P3 .claude/settings.json allow entries (npm ci, npm run, npx vitest/eslint/prettier/tsc/knip, scripts/check.sh, check-harness.sh). The Edit was denied by the auto-mode classifier (Self-Modification); not retried by any other route. Needs user to approve or add the entries. Evidence: npm ci exit 0 (ignore-scripts=true, no install errors); scripts/check.sh exit 0; check-harness.sh exit 0; ci.yml parses (yaml), steps as specified; npx vitest run exit 1 'No test files found' (expected until criterion 8). Criterion 6 stays unchecked until P3 lands.
 
 criterion 7: milestones m-0 Tune by microphone, m-1 Play falling notes, m-2 Adjust fall speed; drafts DRAFT-1..8 slices (tuning/select-preset, tuning/set-reference, tuner/start-listening, tuner/read-pitch, practice/start-session, practice/record-hit, practice/set-latency-offset, practice/set-fall-speed) with module labels and milestones; DRAFT-9 Practice tests with 16 pack-tagged criteria (15 domain/music-training + TS-017). Every slice criterion has exactly one tag or ASSUMED prefix. evidence: backlog milestone list and draft list show all of the above.
+
+criterion 8: walking skeleton. Module health (slice check: handler returns status ok + APP_VERSION; test TASK-1#8 health check reports ok with the version string). shared/config.ts (APP_VERSION). app/index.ts renderHealth wires check into a page element. No datastore: no store, no migrations (migration command none). Round 1 fix: prettier table in src/_about.md (npm run fix); no other rounds. Evidence: scripts/check.sh exit 0; npx vitest run src/modules/health/slices/check/handler.test.ts exit 0 (1 passed); npx vitest run exit 0 (1 passed); meta/core/tools/check-harness.sh exit 0 (ok: harness checks passed). CI run success on 2334c5e: https://github.com/CodingSar/GuitarTuner/actions/runs/38049431813 (all six steps green). Open: criterion 6 still unchecked (P3 settings allow entries blocked by classifier). Gap noted: check.sh SEC-002 forbid grep on index.html passes silently while index.html is absent; it must be made to fail on a missing file once index.html exists.
 <!-- SECTION:NOTES:END -->
