@@ -1,10 +1,11 @@
 ---
 id: TASK-20
 title: 'Practice: player sets the BPM'
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-10-10 19:07'
-updated_date: '2026-10-10 19:28'
+updated_date: '2026-10-10 19:32'
 labels:
   - 'module:practice'
   - ui
@@ -49,3 +50,9 @@ Tempo is a whole number from 20 to 240 BPM. Note spacing is 60000 / BPM ms; hit 
 
 Final check: npx vitest run (full suite), scripts/check.sh. Manual browser check of the page wiring is noted in the task notes.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+start: c978bf9b04717b95d16e9bbd5370f2ca7a46c7f1
+<!-- SECTION:NOTES:END -->
