@@ -55,8 +55,16 @@ export function handler(
       set("listening");
     },
     (error: unknown) => {
-      if ((error as Error | undefined)?.name !== "NotAllowedError") throw error;
-      set("denied");
+      const name = (error as Error | undefined)?.name;
+      if (name === "NotAllowedError") {
+        set("denied");
+      } else if (name === "NotFoundError") {
+        set("no-device");
+      } else if (name === "OverconstrainedError") {
+        set("constraint-failed");
+      } else {
+        throw error;
+      }
     },
   );
 
