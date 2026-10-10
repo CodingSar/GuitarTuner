@@ -1,4 +1,4 @@
 {
-  "entry": ["src/app/index.ts"],
+  "entry": ["src/app/index.ts", "src/modules/practice/index.ts"],
   "project": ["src/**/*.ts"]
 }
