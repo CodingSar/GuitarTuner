@@ -10,3 +10,7 @@ export {
   type JudgedNote,
   type PlayedInput,
 } from "./slices/record-hit/handler";
+export {
+  handler as setLatencyOffset,
+  type LatencyOffset,
+} from "./slices/set-latency-offset/handler";
