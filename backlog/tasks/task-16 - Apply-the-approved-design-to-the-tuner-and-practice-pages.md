@@ -1,11 +1,11 @@
 ---
 id: TASK-16
 title: Apply the approved design to the tuner and practice pages
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 17:34'
-updated_date: '2026-10-10 18:29'
+updated_date: '2026-10-10 18:59'
 labels:
   - ui
 dependencies:
@@ -28,8 +28,8 @@ Implements the approved design from the design task. Behaviour stays as it is; t
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 GIVEN the approved design WHEN the tuner page is viewed THEN its layout, colors, and type match the design at phone and desktop widths
-- [ ] #2 GIVEN the approved design WHEN the practice page is viewed THEN the falling-note view and controls match the design
+- [x] #1 GIVEN the approved design WHEN the tuner page is viewed THEN its layout, colors, and type match the design at phone and desktop widths
+- [x] #2 GIVEN the approved design WHEN the practice page is viewed THEN the falling-note view and controls match the design
 - [x] #3 GIVEN the OS is set to dark mode WHEN either page loads THEN the dark theme from the design applies
 - [x] #4 GIVEN the styling is applied WHEN the existing tests run THEN they still pass with no changes to behaviour
 <!-- AC:END -->
@@ -51,4 +51,12 @@ start: ffd4945637f300a7da1b9cbeb88ab00ed39b393c
 Step 1: theme.css, Google Fonts link, stylesheet link in index.html and practice.html. Step 2: canvas palette read from tokens in new src/app/practice-palette.ts (split out to keep practice-page.ts under the 200-line cap). Follow-up: dropped the :root[data-theme=dark] block, since nothing sets data-theme and it was a jscpd clone of the media block. Dark follows OS only; data-theme=light still opts out. Deviates from the plan's step 1 wording. Checks: npx vitest run 77/77 pass; scripts/check.sh exit 0. Evidence: headless Firefox screenshots at 390 and 1280, light and dark, in scratchpad. Gaps still open: tuner big note name, cents meter and string rows; practice Hits/Missed/Streak stats and song list. Need new markup and JS, so AC1 and AC2 stay unchecked until the user decides.
 
 User decided: keep TASK-16 In Progress; AC1 and AC2 stay unchecked until TASK-17 and TASK-18 land. Re-verified: npx vitest run 77/77 pass; scripts/check.sh exit 0.
+
+AC1 and AC2 accepted on the design-matching evidence from TASK-16, TASK-17 and TASK-18 screenshots and tests. Full suite 93/93 and scripts/check.sh exit 0.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Approved design applied to the tuner and practice pages: shared theme.css tokens, OS-driven dark mode, practice canvas palette from tokens. TASK-17 added the tuner note, cents meter and string rows; TASK-18 added the hit/miss/streak tally and song cards. Verified with 93/93 tests, scripts/check.sh and headless Firefox screenshots. Tuner marked-row and dark mode not browser-checked (accepted on code review).
+<!-- SECTION:FINAL_SUMMARY:END -->

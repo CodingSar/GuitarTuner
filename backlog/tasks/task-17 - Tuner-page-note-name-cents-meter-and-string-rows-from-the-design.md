@@ -1,11 +1,11 @@
 ---
 id: TASK-17
 title: 'Tuner page: note name, cents meter and string rows from the design'
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 18:24'
-updated_date: '2026-10-10 18:37'
+updated_date: '2026-10-10 18:59'
 labels:
   - ui
 dependencies:
@@ -33,7 +33,7 @@ TASK-16 applied the approved tuner design's colours, type and layout, but not it
 <!-- AC:BEGIN -->
 - [x] #1 While listening, the tuner shows the nearest note name in large type, and shows a placeholder when no pitch is read
 - [x] #2 A cents meter with a centre mark moves with the cents reading, and its in-tune state uses the same rule as the existing readout text
-- [ ] #3 The preset's strings are shown as rows, and the string currently nearest the pitch is marked
+- [x] #3 The preset's strings are shown as rows, and the string currently nearest the pitch is marked
 - [x] #4 Tests cover the note name, meter and marked-row states from a pitch reading, and the tuner's behaviour is unchanged
 <!-- AC:END -->
 
@@ -54,4 +54,12 @@ TASK-16 applied the approved tuner design's colours, type and layout, but not it
 Built per plan. New pure module src/app/tuner-display.ts (displayOf, NO_PITCH); ListeningView gets optional panel (show(display)), fed each tick and reset to NO_PITCH on every non-listening render. TuningView.strings now setLabels(labels); tuning-view.test asserts the label list (same two cases). index.ts: stringsOf renders <li> rows and marks aria-current on the nearest; panelOf drives #note, #needle, #panel data-state. index.html: #panel (note, meter, readout) and #side (status, controls, presets, reference, #strings as ul). theme.css: 112px phone / 176px desktop note, meter with centre tick, needle, string rows, desktop two-column via main:has(#panel).
 Verified: npx vitest run 85/85 pass; scripts/check.sh exit 0 (listening-view.test.ts trimmed to the 300-line cap). Headless Firefox screenshots at 390px and 1280px (light): placeholder, meter with centre tick, six string rows, two-column desktop layout (scratchpad phone.png, desktop.png).
 Not verified: live reading state in a browser (needs a microphone), dark mode, and the marked-row DOM update (no DOM test environment in the repo; mapping covered by tuner-display.test and listening-view.test). Hz values from the design not shown: the reading carries no Hz field and no AC asks for it.
+
+AC3 accepted on code review, not browser evidence. Wiring: displayOf sets label from the reading; panelOf.show calls strings.mark(label); stringsOf sets aria-current on the li whose text equals the label; labels come from the same preset as the reading targets. Tests: npx vitest run 93/93, scripts/check.sh exit 0.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Tuner page shows the nearest note name in large type, a cents meter with centre mark, and the preset strings as rows with the nearest marked (aria-current). Tests cover the display model and listening view (93/93 pass, scripts/check.sh exit 0). Accepted on code review: the live marked-row DOM update and dark mode were not run in a browser. Layout checked with headless Firefox screenshots at 390px and 1280px, light.
+<!-- SECTION:FINAL_SUMMARY:END -->
