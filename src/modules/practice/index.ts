@@ -30,4 +30,5 @@ export {
   type LayoutNote,
   type PlacedNote,
 } from "./slices/layout-falling-notes/handler";
+export { handler as mapPitch } from "./slices/map-pitch/handler";
 export { type Song, type SongNote } from "./model";

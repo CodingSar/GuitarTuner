@@ -33,6 +33,9 @@ const song: Song = {
   ],
 };
 
+// Open strings in Hz, standard tuning: index 0 is string 1 (high E).
+const openHz = [329.63, 246.94, 196.0, 146.83, 110.0, 82.41];
+
 // The y of the first placed note. Fails the test if nothing is placed.
 function firstY(placed: readonly PlacedNote[]): number {
   const [first] = placed;
@@ -125,5 +128,71 @@ describe("practice-view", () => {
     steadyClock.time = 500;
     clock.time = 500;
     expect(firstY(practice.frame())).toBe(firstY(steady.frame()));
+  });
+
+  // Timing window 150 ms. The first song note (string 1 fret 0) is hit at 1000 ms.
+  it("TASK-14#1 a pitch of the note in play at its hit time is recorded, and that note is judged hit", () => {
+    const clock = fakeClock(0);
+    const practice = mountPractice([song], clock, 400);
+    practice.selectSong(0);
+    practice.start();
+
+    clock.time = 1000;
+    practice.hear(329.63, openHz);
+
+    expect(practice.judgments()).toEqual(["hit", "pending", "pending"]);
+  });
+
+  it("TASK-14#2 a detected pitch more than 50 cents from every fret records nothing, and that note is judged missed after the window", () => {
+    const clock = fakeClock(0);
+    const practice = mountPractice([song], clock, 400);
+    practice.selectSong(0);
+    practice.start();
+
+    clock.time = 1000;
+    practice.hear(60, openHz);
+    clock.time = 1151;
+
+    expect(practice.judgments()).toEqual(["missed", "pending", "pending"]);
+  });
+
+  it("TASK-14#3 a note whose matching string and fret arrive within the timing window is shown as hit", () => {
+    const clock = fakeClock(0);
+    const practice = mountPractice([song], clock, 400);
+    practice.selectSong(0);
+    practice.start();
+
+    // 100 ms after the hit time, inside the 150 ms window.
+    clock.time = 1100;
+    practice.hear(329.63, openHz);
+
+    expect(practice.judgments()).toEqual(["hit", "pending", "pending"]);
+  });
+
+  it("TASK-14#3 a note whose matching string and fret arrive after the timing window is shown as missed", () => {
+    const clock = fakeClock(0);
+    const practice = mountPractice([song], clock, 400);
+    practice.selectSong(0);
+    practice.start();
+
+    // 151 ms after the hit time, one millisecond past the 150 ms window.
+    clock.time = 1151;
+    practice.hear(329.63, openHz);
+
+    expect(practice.judgments()).toEqual(["missed", "pending", "pending"]);
+  });
+
+  it("TASK-14#1 pitches heard in an earlier run do not count as hits after Start again", () => {
+    const clock = fakeClock(0);
+    const practice = mountPractice([song], clock, 400);
+    practice.selectSong(0);
+    practice.start();
+    clock.time = 1000;
+    practice.hear(329.63, openHz);
+
+    practice.start();
+    clock.time = 1000;
+
+    expect(practice.judgments()).toEqual(["pending", "pending", "pending"]);
   });
 });
