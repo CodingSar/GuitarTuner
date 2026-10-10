@@ -1,5 +1,6 @@
 import type { Song } from "../../model";
+import { BUNDLED_SONGS } from "../../songs";
 
 export function handler(): readonly Song[] {
-  throw new Error("not implemented");
+  return BUNDLED_SONGS;
 }
