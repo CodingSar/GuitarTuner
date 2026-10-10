@@ -1,7 +1,7 @@
 export type PresetName = "standard" | "drop-d";
 
 // One string of a preset: its note name and its MIDI note number.
-export interface NoteSpec {
+interface NoteSpec {
   label: string;
   midi: number;
 }
@@ -20,29 +20,25 @@ export interface Target {
 
 export const DEFAULT_REFERENCE_HZ = 440;
 
+// The standard tuning. Drop D reuses its strings except the lowest.
+const standardStrings: readonly NoteSpec[] = [
+  { label: "E2", midi: 40 },
+  { label: "A2", midi: 45 },
+  { label: "D3", midi: 50 },
+  { label: "G3", midi: 55 },
+  { label: "B3", midi: 59 },
+  { label: "E4", midi: 64 },
+];
+
 // The presets the tuner offers, keyed by name.
 export const PRESETS: Record<PresetName, Preset> = {
   standard: {
     name: "standard",
-    strings: [
-      { label: "E2", midi: 40 },
-      { label: "A2", midi: 45 },
-      { label: "D3", midi: 50 },
-      { label: "G3", midi: 55 },
-      { label: "B3", midi: 59 },
-      { label: "E4", midi: 64 },
-    ],
+    strings: standardStrings,
   },
   "drop-d": {
     name: "drop-d",
-    strings: [
-      { label: "D2", midi: 38 },
-      { label: "A2", midi: 45 },
-      { label: "D3", midi: 50 },
-      { label: "G3", midi: 55 },
-      { label: "B3", midi: 59 },
-      { label: "E4", midi: 64 },
-    ],
+    strings: [{ label: "D2", midi: 38 }, ...standardStrings.slice(1)],
   },
 };
 
