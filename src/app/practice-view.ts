@@ -79,6 +79,7 @@ export function mountPractice(
       if (session === undefined) return [];
       const notes = session.notes.map((note) => ({
         string: note.string,
+        fret: note.fret,
         hitTime: note.hitTime,
       }));
       const t = audioTime();

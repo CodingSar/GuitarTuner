@@ -1,6 +1,7 @@
 // A note to place: the string it is played on and the time it is hit.
 export interface LayoutNote {
   readonly string: number;
+  readonly fret: number;
   readonly hitTime: number;
 }
 
@@ -8,6 +9,7 @@ export interface LayoutNote {
 export interface PlacedNote {
   readonly row: number;
   readonly y: number;
+  readonly fret: number;
 }
 
 export function handler(
@@ -19,5 +21,6 @@ export function handler(
   return notes.map((note) => ({
     row: note.string - 1,
     y: hitLineY - (note.hitTime - now) * speed,
+    fret: note.fret,
   }));
 }

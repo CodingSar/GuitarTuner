@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 17:33'
-updated_date: '2026-10-10 17:52'
+updated_date: '2026-10-10 17:54'
 labels:
   - 'module:practice'
   - ui
@@ -14,6 +14,8 @@ dependencies:
   - TASK-9
   - TASK-12
 modified_files:
+  - src/modules/practice/slices/layout-falling-notes/handler.test.ts
+  - src/modules/practice/slices/layout-falling-notes/handler.ts
   - src/app/practice-view.ts
 ordinal: 4000
 ---
@@ -56,6 +58,8 @@ Fixed settings in the page: slowPerMs 0.15, fastPerMs 0.30, rampMs 500, hitLineY
 Wiring: the practice page is the route for the view (step 4 is the app/ mapping).
 
 Revision after step 3 deviation (orchestrator decision): (a) frame() and the fall-speed toggles use the session's audio time, not clock.now(): audioTime = firstNote.hitTime - session.timeToHit(0) (0 before start). The session already freezes its own time on pause, so the view freezes with or without a stopped clock. (b) start() does not call clock.resume(); the page resumes the AudioContext on the Start click before calling start(). Pause and resume still call the clock. (c) slower() and faster() keep a direction flag (initial slow); a toggle runs only when the requested speed differs from the current one, so Slower from the start stays slow. (d) Test fix: practice-view.test.ts TASK-13#3 expects the faster note at 500 ms before its hit to be HIGHER on screen (smaller y), since at a fixed time before the hit a faster note covers more pixels. Add one test: after faster() then slower(), the y at 500 ms before the hit equals the steady-speed y. Retire: src/app/practice-view.test.ts :: TASK-13#3 (faster direction) -> rewrite as TASK-13#3.
+
+Revision after step 4 deviation (orchestrator decision): the page must draw each note's fret, so fret travels with the note through the types. (e) LayoutNote becomes { string, fret, hitTime } and PlacedNote becomes { row, y, fret }; layout handler copies fret through. Layout tests add fret to their input notes and, where they compare whole placed notes, to the expected values. Retire: src/modules/practice/slices/layout-falling-notes/handler.test.ts :: all tests -> rewrite as TASK-13#1 and TASK-13#3 (same criteria, fret added). (f) frame() in src/app/practice-view.ts maps session notes to { string, fret, hitTime }. (g) Step 4 page draws fret labels from PlacedNote.fret; no index correspondence. Order of execution: test edit, layout step, controller step, then page step.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -68,4 +72,6 @@ test-first: 6 new tests fail (5 not implemented, 1 ENOENT practice.html on pages
 step 2: layout-falling-notes handler; targeted tests pass (2/2); tsc clean.
 
 step 3 (rerun after revision): practice controller; targeted tests pass (4/4); tsc clean.
+
+fret chain (revision e, f): LayoutNote and PlacedNote carry fret; layout and controller tests pass; tsc clean; pages test still red until step 4.
 <!-- SECTION:NOTES:END -->
