@@ -13,6 +13,8 @@ import { audioClock } from "./audio-clock";
 import { browserMicrophone } from "./microphone";
 import { fillOf, labelOf, palette } from "./practice-palette";
 import { mountPractice } from "./practice-view";
+import { mountSongCards, showTally } from "./practice-panel";
+import type { TallyElements } from "./practice-panel";
 
 // Looks up an element by id. A missing element is a broken page, so fail loudly.
 function byId<T extends HTMLElement>(id: string): T {
@@ -32,7 +34,12 @@ function contextOf(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
 }
 
 const canvas = byId<HTMLCanvasElement>("stage");
-const select = byId<HTMLSelectElement>("song");
+const songsBox = byId<HTMLElement>("songs");
+const tallyElements: TallyElements = {
+  hits: byId<HTMLElement>("hits"),
+  missed: byId<HTMLElement>("missed"),
+  streak: byId<HTMLElement>("streak"),
+};
 const ctx = contextOf(canvas);
 
 const context = new AudioContext();
@@ -46,18 +53,14 @@ const practice = mountPractice(songs, clock, hitLineY);
 const targets = targetsFor(selectPreset("standard"), DEFAULT_REFERENCE_HZ);
 const openHz = targets.map((target) => target.hz).reverse();
 
-select.append(
-  ...songs.map((song, index) => {
-    const option = document.createElement("option");
-    option.value = String(index);
-    option.textContent = song.title;
-    return option;
-  }),
-);
-select.addEventListener("change", () => {
-  practice.selectSong(Number(select.value));
+const markChosen = mountSongCards(songsBox, songs, (index) => {
+  practice.selectSong(index);
+  void context.resume();
+  practice.start();
+  markChosen(index);
 });
 practice.selectSong(0);
+markChosen(0);
 
 // One open microphone: its listener, and the stream the browser hands over.
 interface MicSession {
@@ -178,6 +181,7 @@ function drawFrame(ctx: CanvasRenderingContext2D): void {
 function tick(): void {
   drawFrame(ctx);
   listen();
+  showTally(tallyElements, practice.tally());
   requestAnimationFrame(tick);
 }
 requestAnimationFrame(tick);
