@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Guitar practice</title>
+  </head>
+  <body>
+    <main>
+      <h1>Guitar practice</h1>
+      <p><a href="index.html">Tuner</a></p>
+      <label>
+        Song
+        <select id="song"></select>
+      </label>
+      <button id="start" type="button">Start</button>
+      <button id="pause" type="button">Pause</button>
+      <button id="resume" type="button">Resume</button>
+      <button id="slower" type="button">Slower</button>
+      <button id="faster" type="button">Faster</button>
+      <canvas id="stage" width="360" height="480"></canvas>
+    </main>
+    <script type="module" src="/src/app/practice-page.ts"></script>
+  </body>
+</html>

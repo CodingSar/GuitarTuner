@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 17:33'
-updated_date: '2026-10-10 17:54'
+updated_date: '2026-10-10 17:57'
 labels:
   - 'module:practice'
   - ui
@@ -14,9 +14,18 @@ dependencies:
   - TASK-9
   - TASK-12
 modified_files:
+  - practice.html
+  - src/app/practice-page.ts
+  - index.html
+  - vite.config.ts
+  - knip.json
+  - src/app/pages.test.ts
+  - src/app/practice-view.test.ts
+  - src/app/practice-view.ts
+  - src/modules/practice/_about.md
+  - src/modules/practice/index.ts
   - src/modules/practice/slices/layout-falling-notes/handler.test.ts
   - src/modules/practice/slices/layout-falling-notes/handler.ts
-  - src/app/practice-view.ts
 ordinal: 4000
 ---
 
@@ -74,4 +83,6 @@ step 2: layout-falling-notes handler; targeted tests pass (2/2); tsc clean.
 step 3 (rerun after revision): practice controller; targeted tests pass (4/4); tsc clean.
 
 fret chain (revision e, f): LayoutNote and PlacedNote carry fret; layout and controller tests pass; tsc clean; pages test still red until step 4.
+
+step 4: practice.html, practice-page.ts (canvas, fret labels), index link, vite multi-page input, knip entry. Pages test passes; tsc clean; vite build ok (both pages). step 5: npm run fix, scripts/check.sh exit 0, full vitest 69/69. dist/ from the build was left in the repo folder: gitignored, guard blocked rm -rf.
 <!-- SECTION:NOTES:END -->
