@@ -44,19 +44,19 @@ describe("start listening", () => {
   it("TASK-4#1 pending state shows until the browser grants the microphone", async () => {
     const mic = fakeMic();
     const { states, onState } = recorder();
-    const listening = handler(mic.source, onState);
+    const listener = handler(mic.source, onState);
     expect(states).toEqual(["pending"]);
     mic.grant();
-    await listening;
+    await listener.ready;
     expect(states).toEqual(["pending", "listening"]);
   });
 
   it("TASK-4#2 denied state shows and no pitch readout appears when microphone access is denied", async () => {
     const mic = fakeMic();
     const { states, onState } = recorder();
-    const listening = handler(mic.source, onState);
+    const listener = handler(mic.source, onState);
     mic.deny();
-    const listener = await listening;
+    await listener.ready;
     expect(states.at(-1)).toBe("denied");
     expect(states).not.toContain("listening");
     expect(listener.state).toBe("denied");
@@ -65,11 +65,24 @@ describe("start listening", () => {
   it("TASK-4#3 microphone is released and no audio is stored when listening stops", async () => {
     const mic = fakeMic();
     const { states, onState } = recorder();
-    const listening = handler(mic.source, onState);
+    const listener = handler(mic.source, onState);
     mic.grant();
-    const listener = await listening;
+    await listener.ready;
     listener.stop();
     expect(mic.releases()).toBe(1);
     expect(states.at(-1)).toBe("idle");
+  });
+
+  it("TASK-4#4 microphone is released and state stays idle when the grant arrives after the player stops", async () => {
+    const mic = fakeMic();
+    const { states, onState } = recorder();
+    const listener = handler(mic.source, onState);
+    listener.stop();
+    mic.grant();
+    await listener.ready;
+    expect(mic.releases()).toBe(1);
+    expect(states.at(-1)).toBe("idle");
+    expect(states).not.toContain("listening");
+    expect(listener.state).toBe("idle");
   });
 });
