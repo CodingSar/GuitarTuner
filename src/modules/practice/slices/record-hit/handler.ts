@@ -18,5 +18,17 @@ export function handler(
   windowMs: number,
   now: number,
 ): Judgment {
-  throw new Error("not implemented");
+  const matched = inputs.some(
+    (input) =>
+      input.string === note.string &&
+      input.fret === note.fret &&
+      Math.abs(input.time - note.hitTime) <= windowMs,
+  );
+  if (matched) {
+    return "hit";
+  }
+  if (now > note.hitTime + windowMs) {
+    return "missed";
+  }
+  return "pending";
 }
