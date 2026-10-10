@@ -1,5 +1,11 @@
-import { startListening } from "../modules/tuner";
-import type { Listener, ListeningState, MicSource } from "../modules/tuner";
+import { readPitch, startListening } from "../modules/tuner";
+import type {
+  Listener,
+  ListeningState,
+  MicSource,
+  MicStream,
+} from "../modules/tuner";
+import { describeReading, standardTargets } from "./pitch-readout";
 
 // A clickable control on the tuner page. The page keeps only what it shows.
 export interface Control {
@@ -12,7 +18,7 @@ export interface ListeningView {
   status: { textContent: string | null };
   start: Control;
   stop: Control;
-  readout: { hidden: boolean };
+  readout: { hidden: boolean; textContent: string | null };
 }
 
 const statusText: Record<ListeningState, string> = {
@@ -23,21 +29,65 @@ const statusText: Record<ListeningState, string> = {
 };
 
 // Wires the Start and Stop controls to the tuner's listening slice.
-export function mountListening(view: ListeningView, mic: MicSource): void {
+export function mountListening(
+  view: ListeningView,
+  mic: MicSource,
+  schedule: (frame: () => void) => void = (frame) => {
+    requestAnimationFrame(frame);
+  },
+): void {
   let listener: Listener | undefined;
+  // The most recently opened stream, and whether the reading loop runs.
+  let opened: MicStream | undefined;
+  let running = false;
+  // Bumped on each Start and Stop click, so a stale scheduled tick stops.
+  let generation = 0;
+
+  // Keeps the stream the browser hands over so the loop can read it.
+  const tapped: MicSource = {
+    open: async () => {
+      const stream = await mic.open();
+      opened = stream;
+      return stream;
+    },
+  };
+
+  // Reads the nearest string once per frame while listening.
+  const tick = (gen: number): void => {
+    const analysis = opened?.analysis;
+    if (gen !== generation || !running || analysis === undefined) return;
+    const reading = readPitch(
+      analysis.samples(),
+      analysis.sampleRate,
+      standardTargets,
+    );
+    view.readout.textContent = describeReading(reading);
+    view.readout.hidden = false;
+    schedule(() => tick(gen));
+  };
 
   const render = (state: ListeningState): void => {
     view.status.textContent = statusText[state];
     view.start.hidden = !(state === "idle" || state === "denied");
     view.stop.hidden = !(state === "pending" || state === "listening");
-    view.readout.hidden = true;
+    if (state !== "listening") view.readout.hidden = true;
+    // Start the loop only when there is a stream to read.
+    if (state === "listening" && opened?.analysis) {
+      running = true;
+      const gen = generation;
+      schedule(() => tick(gen));
+    }
   };
 
   view.start.onClick(() => {
-    listener = startListening(mic, render);
+    generation += 1;
+    listener = startListening(tapped, render);
   });
   view.stop.onClick(() => {
+    generation += 1;
     listener?.stop();
+    running = false;
+    opened = undefined;
   });
 
   render("idle");

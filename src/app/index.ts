@@ -28,6 +28,21 @@ function hiddenFlag(element: HTMLElement): { hidden: boolean } {
   };
 }
 
+// Exposes an element's text as a string-or-null property.
+function readoutOf(element: HTMLElement): {
+  hidden: boolean;
+  textContent: string | null;
+} {
+  return Object.assign(hiddenFlag(element), {
+    get textContent() {
+      return element.textContent;
+    },
+    set textContent(value: string | null) {
+      element.textContent = value;
+    },
+  });
+}
+
 // Adapts a button to the Control the listening view expects.
 function control(button: HTMLButtonElement): Control {
   return Object.assign(hiddenFlag(button), {
@@ -43,7 +58,7 @@ export function mountTunerPage(doc: Document): void {
     status: byId<HTMLElement>(doc, "status"),
     start: control(byId<HTMLButtonElement>(doc, "start")),
     stop: control(byId<HTMLButtonElement>(doc, "stop")),
-    readout: hiddenFlag(byId<HTMLElement>(doc, "readout")),
+    readout: readoutOf(byId<HTMLElement>(doc, "readout")),
   };
   mountListening(view, browserMicrophone);
 }
