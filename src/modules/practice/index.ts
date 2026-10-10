@@ -14,3 +14,8 @@ export {
   handler as setLatencyOffset,
   type LatencyOffset,
 } from "./slices/set-latency-offset/handler";
+export {
+  handler as setFallSpeed,
+  type FallSpeed,
+  type FallSpeedSettings,
+} from "./slices/set-fall-speed/handler";
