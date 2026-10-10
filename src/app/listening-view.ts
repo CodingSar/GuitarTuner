@@ -5,7 +5,13 @@ import type {
   MicSource,
   MicStream,
 } from "../modules/tuner";
-import { describeReading, standardTargets } from "./pitch-readout";
+import { describeReading } from "./pitch-readout";
+import {
+  DEFAULT_REFERENCE_HZ,
+  selectPreset,
+  targetsFor,
+} from "../modules/tuning";
+import type { Target } from "../modules/tuning";
 
 // A clickable control on the tuner page. The page keeps only what it shows.
 export interface Control {
@@ -35,6 +41,8 @@ export function mountListening(
   schedule: (frame: () => void) => void = (frame) => {
     requestAnimationFrame(frame);
   },
+  targets: () => readonly Target[] = () =>
+    targetsFor(selectPreset(), DEFAULT_REFERENCE_HZ),
 ): void {
   let listener: Listener | undefined;
   // The most recently opened stream, and whether the reading loop runs.
@@ -59,7 +67,7 @@ export function mountListening(
     const reading = readPitch(
       analysis.samples(),
       analysis.sampleRate,
-      standardTargets,
+      targets(),
     );
     view.readout.textContent = describeReading(reading);
     view.readout.hidden = false;
