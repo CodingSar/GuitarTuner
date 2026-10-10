@@ -24,7 +24,9 @@ describe("layout-falling-notes", () => {
   });
 
   it("TASK-13#3 two fall speeds put a note on the hit line at its hit time, and at 500 ms before it the notes are at different heights", () => {
-    const notes: readonly LayoutNote[] = [{ string: 1, fret: 0, hitTime: 1000 }];
+    const notes: readonly LayoutNote[] = [
+      { string: 1, fret: 0, hitTime: 1000 },
+    ];
 
     expect(handler(notes, 1000, 0.15, 400)[0]?.y).toBe(400);
     expect(handler(notes, 1000, 0.3, 400)[0]?.y).toBe(400);
