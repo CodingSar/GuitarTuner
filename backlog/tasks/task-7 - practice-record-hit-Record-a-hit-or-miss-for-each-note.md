@@ -1,11 +1,11 @@
 ---
 id: TASK-7
 title: 'practice/record-hit: Record a hit or miss for each note'
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 11:41'
-updated_date: '2026-10-10 16:17'
+updated_date: '2026-10-10 16:19'
 labels:
   - 'module:practice'
 milestone: Play falling notes
@@ -20,8 +20,8 @@ Core job from product-brief: play the right string and fret as notes fall. Each 
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 GIVEN a note falling through the hit line WHEN the player plays the right string and fret within the timing window THEN the hit is recorded [brief: core jobs]
-- [ ] #2 GIVEN a note passes the hit line WHEN no matching input arrives within the timing window THEN the note is marked missed [brief: core jobs]
+- [x] #1 GIVEN a note falling through the hit line WHEN the player plays the right string and fret within the timing window THEN the hit is recorded [brief: core jobs]
+- [x] #2 GIVEN a note passes the hit line WHEN no matching input arrives within the timing window THEN the note is marked missed [brief: core jobs]
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -37,4 +37,12 @@ Core job from product-brief: play the right string and fret as notes fall. Each 
 
 <!-- SECTION:NOTES:BEGIN -->
 start: 978793ad1291f448e5bcdd309320ec487634023c
+
+step 2: judge body in record-hit/handler.ts. Verify: full suite 31/31 pass, scripts/check.sh exit 0, changed files all on plan.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added practice/record-hit: pure judge handler(note, inputs, windowMs, now) returning hit, missed or pending. A played input counts only when string and fret match and it lands within windowMs of hitTime. Past the window with no match it is missed. Window is a parameter; no default chosen. Verified: TASK-7#1 and TASK-7#2 pass in npx vitest run; full suite 31/31; scripts/check.sh exit 0.
+<!-- SECTION:FINAL_SUMMARY:END -->
