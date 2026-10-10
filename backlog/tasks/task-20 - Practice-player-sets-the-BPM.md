@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 19:07'
-updated_date: '2026-10-10 19:32'
+updated_date: '2026-10-10 19:38'
 labels:
   - 'module:practice'
   - ui
@@ -55,4 +55,10 @@ Final check: npx vitest run (full suite), scripts/check.sh. Manual browser check
 
 <!-- SECTION:NOTES:BEGIN -->
 start: c978bf9b04717b95d16e9bbd5370f2ca7a46c7f1
+
+step 1: ok, validate-tempo 9/9 (5a0debe)
+step 2: ok, adjust-tempo 4/4 (8d06623)
+step 3: ok, to-practice 2/2, tempo ?? song.tempo (commit below)
+
+step 4: ok, practice-view 15/15 (defaultTempo throws only when no song chosen)
 <!-- SECTION:NOTES:END -->
