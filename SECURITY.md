@@ -6,6 +6,6 @@ The latest commit on `main` is the only supported version.
 
 ## Reporting a vulnerability
 
-Report privately through GitHub's private vulnerability reporting: open the
-repository's Security tab and choose "Report a vulnerability". Do not open a
-public issue for a security problem.
+GuitarTuner is a local app: it runs in the browser, has no server, and stores
+no data. If you find a security problem, contact the maintainer directly
+rather than opening a public issue.
