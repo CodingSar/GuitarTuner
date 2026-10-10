@@ -1,7 +1,7 @@
 ---
 id: TASK-1
 title: Initialize factory for GuitarTuner
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 10:56'
@@ -53,3 +53,9 @@ findings: FINDINGS.md at repo root records the accepted gaps (Node 26 vs 24 pin:
 
 criterion 6: P3 applied (settings.json allow only: npm ci, npm run, npx vitest/eslint/prettier/tsc/knip, scripts/check.sh, meta/core/tools/check-harness.sh; deny and hooks unchanged, JSON valid). Provisioned: .nvmrc, .github/workflows/ci.yml, README.md, meta/product/overlays/{orchestrate,test,implement}.md. Evidence: npm ci exit 0; scripts/check.sh exit 0 (after SECURITY.md reword); check-harness.sh exit 0; ci.yml parses; CI run 38049431813 success on the provisioned tree.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Init complete. Brief (product-brief, doc-1), facets, stack (TypeScript 6.0.3, Vite 8.3.4, Vitest 5.0.3, no datastore), decisions decision-1..6. Packs vendored and locked: lang/typescript, domain/music-training, concern/security-web; upstream PRs CodingSar/GhostInsidePractices #1-#3. Provisioned: CI workflow, stack overlays, product README, settings allow entries. Seeded: milestones m-0..m-2, drafts DRAFT-1..8 (slices) and DRAFT-9 (practice tests). Walking skeleton: health module; check, targeted and full tests, and check-harness all exit 0; CI run 38049431813 green. Known gaps and accepted findings in FINDINGS.md.
+<!-- SECTION:FINAL_SUMMARY:END -->
