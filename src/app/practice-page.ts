@@ -2,7 +2,6 @@
 // controller, feeds it the microphone pitch and draws its notes to the canvas.
 // No business rules.
 import { listSongs } from "../modules/practice";
-import type { Judgment } from "../modules/practice";
 import { readPitch, startListening } from "../modules/tuner";
 import type { Listener, MicSource, MicStream } from "../modules/tuner";
 import {
@@ -12,6 +11,7 @@ import {
 } from "../modules/tuning";
 import { audioClock } from "./audio-clock";
 import { browserMicrophone } from "./microphone";
+import { fillOf, labelOf, palette } from "./practice-palette";
 import { mountPractice } from "./practice-view";
 
 // Looks up an element by id. A missing element is a broken page, so fail loudly.
@@ -24,22 +24,6 @@ function byId<T extends HTMLElement>(id: string): T {
 const LANE_COUNT = 6;
 const NOTE_RADIUS = 14;
 const EDGE_MARGIN = 20;
-const PALETTE = {
-  background: "#101014",
-  lane: "#3a3a48",
-  hitLine: "#f2c94c",
-  note: "#56ccf2",
-  hit: "#6fcf97",
-  missed: "#828282",
-  label: "#0b0b0f",
-};
-// The fill of a note by its judgment. Pending notes keep the note colour.
-const FILL: Record<Judgment, string> = {
-  pending: PALETTE.note,
-  hit: PALETTE.hit,
-  missed: PALETTE.missed,
-};
-
 // The canvas drawing context. Without one the page cannot draw, so fail loudly.
 function contextOf(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
   const ctx = canvas.getContext("2d");
@@ -153,10 +137,11 @@ function laneX(row: number): number {
 }
 
 function drawFrame(ctx: CanvasRenderingContext2D): void {
-  ctx.fillStyle = PALETTE.background;
+  const colours = palette();
+  ctx.fillStyle = colours.background;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.strokeStyle = PALETTE.lane;
+  ctx.strokeStyle = colours.lane;
   ctx.lineWidth = 1;
   for (let row = 0; row < LANE_COUNT; row++) {
     ctx.beginPath();
@@ -165,14 +150,14 @@ function drawFrame(ctx: CanvasRenderingContext2D): void {
     ctx.stroke();
   }
 
-  ctx.strokeStyle = PALETTE.hitLine;
+  ctx.strokeStyle = colours.hitLine;
   ctx.lineWidth = 3;
   ctx.beginPath();
   ctx.moveTo(0, hitLineY);
   ctx.lineTo(canvas.width, hitLineY);
   ctx.stroke();
 
-  ctx.font = "bold 14px sans-serif";
+  ctx.font = `600 14px "IBM Plex Sans", system-ui, sans-serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   // Judged once per frame. Its order matches the frame's notes.
@@ -180,11 +165,12 @@ function drawFrame(ctx: CanvasRenderingContext2D): void {
   for (const [index, note] of practice.frame().entries()) {
     if (note.y < -EDGE_MARGIN || note.y > canvas.height + EDGE_MARGIN) continue;
     const x = laneX(note.row);
-    ctx.fillStyle = FILL[judged[index] ?? "pending"];
+    const judgment = judged[index] ?? "pending";
+    ctx.fillStyle = fillOf(judgment);
     ctx.beginPath();
     ctx.arc(x, note.y, NOTE_RADIUS, 0, 2 * Math.PI);
     ctx.fill();
-    ctx.fillStyle = PALETTE.label;
+    ctx.fillStyle = labelOf(judgment);
     ctx.fillText(String(note.fret), x, note.y);
   }
 }
