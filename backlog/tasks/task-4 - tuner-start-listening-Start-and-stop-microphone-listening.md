@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 11:41'
-updated_date: '2026-10-10 14:51'
+updated_date: '2026-10-10 15:07'
 labels:
   - 'module:tuner'
 milestone: Tune by microphone
@@ -44,4 +44,6 @@ tidy: npm run fix formatted src/_about.md and tuner index.ts; no logic change.
 check blocked: knip 'Unused files: src/modules/tuner/index.ts'. Entry is src/app/index.ts; module not wired. Fix needs app/ wiring (plan said none) or a knip config change. Needs user decision.
 
 gap (not covered by a criterion): stop() while pending. A grant after stop() re-enters listening with the stream held. Needs a criterion before a fix.
+
+held In Progress (option 1): check blocked on knip unused src/modules/tuner/index.ts until the UI task imports the module. Not pushed.
 <!-- SECTION:NOTES:END -->
