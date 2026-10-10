@@ -32,6 +32,8 @@ const statusText: Record<ListeningState, string> = {
   pending: "Waiting for microphone permission",
   listening: "Listening",
   denied: "Microphone access denied",
+  "no-device": "No microphone found",
+  "constraint-failed": "Microphone constraints cannot be met",
 };
 
 // What the page can use for microphone capture.
@@ -42,7 +44,10 @@ export interface ListeningSupport {
 
 // Reads the page's microphone support from the browser.
 function detectSupport(): ListeningSupport {
-  throw new Error("not implemented");
+  return {
+    secure: globalThis.isSecureContext === true,
+    mediaDevices: globalThis.navigator?.mediaDevices !== undefined,
+  };
 }
 
 // Wires the Start and Stop controls to the tuner's listening slice.
@@ -54,8 +59,9 @@ export function mountListening(
   },
   targets: () => readonly Target[] = () =>
     targetsFor(selectPreset(), DEFAULT_REFERENCE_HZ),
-  support: ListeningSupport = detectSupport,
+  support: ListeningSupport = detectSupport(),
 ): void {
+  const canStart = support.secure && support.mediaDevices;
   let listener: Listener | undefined;
   // The most recently opened stream, and whether the reading loop runs.
   let opened: MicStream | undefined;
@@ -88,7 +94,14 @@ export function mountListening(
 
   const render = (state: ListeningState): void => {
     view.status.textContent = statusText[state];
-    view.start.hidden = !(state === "idle" || state === "denied");
+    view.start.hidden =
+      !canStart ||
+      !(
+        state === "idle" ||
+        state === "denied" ||
+        state === "no-device" ||
+        state === "constraint-failed"
+      );
     view.stop.hidden = !(state === "pending" || state === "listening");
     if (state !== "listening") view.readout.hidden = true;
     // Start the loop only when there is a stream to read.
@@ -100,6 +113,7 @@ export function mountListening(
   };
 
   view.start.onClick(() => {
+    if (!canStart) return;
     generation += 1;
     listener = startListening(tapped, render);
   });
