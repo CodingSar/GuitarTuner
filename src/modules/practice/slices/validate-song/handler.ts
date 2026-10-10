@@ -17,7 +17,11 @@ export function handler(song: Song): ValidationResult {
     return { ok: false, noteIndex: -1, message: "title must not be empty" };
   }
   if (!(song.tempo > 0)) {
-    return { ok: false, noteIndex: -1, message: "tempo must be greater than 0" };
+    return {
+      ok: false,
+      noteIndex: -1,
+      message: "tempo must be greater than 0",
+    };
   }
   for (const [noteIndex, note] of song.notes.entries()) {
     if (!isIntegerIn(note.string, 1, 6)) {

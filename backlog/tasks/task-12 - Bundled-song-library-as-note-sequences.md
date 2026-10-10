@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-10-10 17:33'
-updated_date: '2026-10-10 17:40'
+updated_date: '2026-10-10 17:43'
 labels:
   - 'module:practice'
   - song
@@ -13,7 +13,8 @@ dependencies: []
 documentation:
   - doc-1
 modified_files:
-  - src/modules/practice/slices/validate-song/handler.ts
+  - src/modules/practice/songs.ts
+  - src/modules/practice/slices/list-songs/handler.ts
 ordinal: 3000
 ---
 
@@ -56,4 +57,8 @@ test-first: 6 new tests fail with 'not implemented'; 56 others pass. Test-writer
 step 2: songs.ts data and list-songs handler; targeted list-songs test passes (1/1); tsc clean.
 
 step 3: validate-song handler; targeted tests pass (4/4); tsc clean. Also checks empty title and tempo > 0 (plan), noteIndex -1 for those.
+
+step 4: to-practice handler; targeted test passes (1/1); tsc clean.
+
+tidy: jscpd clone in songs.ts. Notes now one string per song ('string/fret' tokens), parsed in list-songs handler. Output identical (checked against HEAD data). check.sh exits 0; full vitest 62/62; jscpd 0 clones.
 <!-- SECTION:NOTES:END -->
