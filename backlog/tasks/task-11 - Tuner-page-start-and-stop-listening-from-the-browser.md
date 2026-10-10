@@ -1,8 +1,9 @@
 ---
 id: TASK-11
 title: 'Tuner page: start and stop listening from the browser'
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-10-10 15:10'
 updated_date: '2026-10-10 15:12'
 labels:
@@ -39,4 +40,6 @@ TASK-4 has a microphone handler but nothing in the app reaches it, so knip flags
 
 <!-- SECTION:NOTES:BEGIN -->
 ASSUMED criteria #1 and #2 are copy defaults. User said choose sensible defaults, so confirmed as defaults.
+
+start: 4419f9d10ee861a2b9f70d303fe728ef0d00610b
 <!-- SECTION:NOTES:END -->
