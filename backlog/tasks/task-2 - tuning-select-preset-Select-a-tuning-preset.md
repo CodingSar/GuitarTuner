@@ -1,11 +1,11 @@
 ---
 id: TASK-2
 title: 'tuning/select-preset: Select a tuning preset'
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 11:41'
-updated_date: '2026-10-10 16:09'
+updated_date: '2026-10-10 16:14'
 labels:
   - 'module:tuning'
 milestone: Tune by microphone
@@ -20,8 +20,8 @@ Tuning by microphone needs a known target note for each string before any readin
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 GIVEN the app is open WHEN the player opens the tuner THEN standard tuning E2 A2 D3 G3 B3 E4 is selected and each string is named [brief: core jobs]
-- [ ] #2 ASSUMED: the player can select drop D, which changes only the low string to D2
+- [x] #1 GIVEN the app is open WHEN the player opens the tuner THEN standard tuning E2 A2 D3 G3 B3 E4 is selected and each string is named [brief: core jobs]
+- [x] #2 ASSUMED: the player can select drop D, which changes only the low string to D2
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -47,3 +47,9 @@ start: de028f9565418c4e24eaa8dfce1855293fb676a4
 
 steps 1-6 done, each gated (targeted tests, tsc, eslint, prettier). Tidy done: model dedup drop-d from standard, unused NoteSpec/Preset exports removed. Full vitest 23/23, tsc clean, boundaries, structure, duplication clean. Check: knip still fails on the pre-existing 'unused file src/modules/practice/index.ts' (same blocker as TASK-5, TASK-6). ACs #1-#2 unchecked until check passes. Not pushed. Local commits 3762c40..c32b317.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added tuning module with presets (standard E2 A2 D3 G3 B3 E4; drop D changes low string to D2), a tuning page that names the strings and a preset select, and listening reads against the selected preset. Verified: TASK-2#1 and TASK-2#2 tests pass in full vitest (29/29); check script exits 0.
+<!-- SECTION:FINAL_SUMMARY:END -->

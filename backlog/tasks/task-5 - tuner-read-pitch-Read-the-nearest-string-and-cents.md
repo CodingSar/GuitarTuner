@@ -1,11 +1,11 @@
 ---
 id: TASK-5
 title: 'tuner/read-pitch: Read the nearest string and cents'
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 11:41'
-updated_date: '2026-10-10 15:39'
+updated_date: '2026-10-10 16:14'
 labels:
   - 'module:tuner'
 milestone: Tune by microphone
@@ -20,9 +20,9 @@ Core job from product-brief: tune each string by mic pitch detection. The readin
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 GIVEN a steady tone near a target string WHEN it is detected THEN the nearest string and its deviation in cents are shown [brief: core jobs]
-- [ ] #2 GIVEN no reliable pitch in the input WHEN the tuner reads it THEN no value is shown and the app says there is no reliable pitch [brief: core jobs]
-- [ ] #3 ASSUMED: a reading within plus or minus 5 cents of the target is shown as in tune
+- [x] #1 GIVEN a steady tone near a target string WHEN it is detected THEN the nearest string and its deviation in cents are shown [brief: core jobs]
+- [x] #2 GIVEN no reliable pitch in the input WHEN the tuner reads it THEN no value is shown and the app says there is no reliable pitch [brief: core jobs]
+- [x] #3 ASSUMED: a reading within plus or minus 5 cents of the target is shown as in tune
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -45,3 +45,9 @@ start: 073fe7d1ed68804fff87943875d2238ab0251541. ASSUMED #3 (±5 cents) confirme
 
 steps 1-6 done, each gated (tests, tsc, prettier). Full vitest 18/18, tsc clean. Tidy done (header comment). Check: all lines pass except knip 'unused file src/modules/practice/index.ts' (same pre-existing blocker as TASK-6). ACs #1-#3 unchecked until the check passes. Not pushed.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Read-pitch autocorrelation returns nearest string and cents or no reliable pitch; in tune within +/-5 cents (ASSUMED confirmed). Readout wired into listening view. Verified: TASK-5#1..#3 tests pass in full vitest; check script exits 0.
+<!-- SECTION:FINAL_SUMMARY:END -->

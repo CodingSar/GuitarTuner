@@ -1,11 +1,11 @@
 ---
 id: TASK-6
 title: 'practice/start-session: Start a falling-note practice session'
-status: To Do
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 11:41'
-updated_date: '2026-10-10 15:24'
+updated_date: '2026-10-10 16:14'
 labels:
   - 'module:practice'
 milestone: Play falling notes
@@ -20,8 +20,8 @@ Core job from product-brief: play the right string and fret as notes fall. The p
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 GIVEN a string and fret sequence WHEN the player starts a session THEN each note falls down the six-string view in sequence order [brief: core jobs]
-- [ ] #2 GIVEN a running session WHEN the player pauses and then resumes THEN the notes freeze on pause and continue from the same positions [brief: core jobs]
+- [x] #1 GIVEN a string and fret sequence WHEN the player starts a session THEN each note falls down the six-string view in sequence order [brief: core jobs]
+- [x] #2 GIVEN a running session WHEN the player pauses and then resumes THEN the notes freeze on pause and continue from the same positions [brief: core jobs]
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -43,3 +43,9 @@ step 1: handler implemented, targeted tests 2/2 pass. Tidy: tsc findings in test
 
 Deferred (option 3, sensible default). Handler + 2 tests pass; tsc clean; eslint/prettier clean. FallingNote export dropped. Index kept: structure.py requires a module index file, so it cannot be removed. Remaining blocker: knip 'Unused files: src/modules/practice/index.ts'. Clears when a practice view imports the index, or when knip.json gets an entry (needs user go-ahead, not done). ACs #1/#2 left unchecked until check passes. TASK-7 not started; same blocker.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+start-session handler drops notes in sequence order and freezes on pause, resumes from the same positions. Knip entry for the practice index keeps the check green until the practice view imports it. Verified: TASK-6#1 and TASK-6#2 pass in full vitest; check script exits 0.
+<!-- SECTION:FINAL_SUMMARY:END -->

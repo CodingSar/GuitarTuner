@@ -1,11 +1,11 @@
 ---
 id: TASK-3
 title: 'tuning/set-reference: Set the reference pitch'
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 11:41'
-updated_date: '2026-10-10 16:13'
+updated_date: '2026-10-10 16:14'
 labels:
   - 'module:tuning'
 milestone: Tune by microphone
@@ -20,7 +20,7 @@ The reference pitch sets every target frequency. The tuner needs it adjustable s
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 ASSUMED: the player can change the reference pitch from A4 = 440 Hz, and the target frequencies recompute from the new reference
+- [x] #1 ASSUMED: the player can change the reference pitch from A4 = 440 Hz, and the target frequencies recompute from the new reference
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -44,3 +44,9 @@ start: 822835ea7b003128269c5db261e9064b125ff0f4
 
 steps 1-4 done, each gated (targeted tests, tsc, eslint, prettier). Full vitest 29/29, tsc clean, boundaries, structure, duplication clean. Reference: handler throws RangeError for non-finite or <=0; reference view keeps last accepted value on invalid entry and rethrows non-RangeError. Check: knip fails only on the pre-existing 'unused file src/modules/practice/index.ts' (same blocker as TASK-2, TASK-5, TASK-6). ACs #1 unchecked until check passes. Not pushed.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added set-reference slice (RangeError for non-finite or <=0) and a reference field on the tuner page; targets recompute from the reference (A2 = ref/4). Invalid entries keep the last accepted reference. Verified: TASK-3#1 tests pass in full vitest; check script exits 0.
+<!-- SECTION:FINAL_SUMMARY:END -->
