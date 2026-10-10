@@ -1,0 +1,182 @@
+/* Shared design tokens and page styles for the Tuner and Practice pages. */
+
+:root {
+  --ground: #f5f3ee;
+  --surface: #ffffff;
+  --ink: #1d1f24;
+  --muted: #5b606b;
+  --line: #d9d5cb;
+  --accent: #b4531f;
+  --ok: #2f7d4f;
+  --pending: #2b6cb0;
+  --missed: #c9ccd2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #15171c;
+    --surface: #1e2128;
+    --ink: #eceae4;
+    --muted: #9aa1ad;
+    --line: #2c3039;
+    --accent: #f0a04b;
+    --ok: #5fd39a;
+    --pending: #7fb4ea;
+    --missed: #5d6470;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 16px;
+}
+
+main {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+a {
+  color: var(--accent);
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+button,
+select,
+input {
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+}
+
+select,
+input {
+  width: 100%;
+}
+
+#start {
+  border: none;
+  border-radius: 12px;
+  background: var(--ink);
+  color: var(--ground);
+  font-weight: 600;
+}
+
+#reference {
+  font-family: "IBM Plex Mono", monospace;
+}
+
+#strings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 15px;
+}
+
+#status,
+#readout {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+#readout {
+  color: var(--ok);
+  font-family: "IBM Plex Mono", monospace;
+}
+
+main:has(#stage) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+main:has(#stage) > :not(button) {
+  grid-column: 1 / -1;
+}
+
+#stage {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+@media (min-width: 900px) {
+  main:has(#strings) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 64px;
+  }
+
+  main:has(#strings) > :not(#status, #start, #stop, #readout) {
+    grid-column: 1;
+  }
+
+  main:has(#strings) > #status {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  main:has(#strings) > #start {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  main:has(#strings) > #stop {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  main:has(#strings) > #readout {
+    grid-column: 2;
+    grid-row: 4;
+  }
+}
+
+@media (min-width: 900px) {
+  main:has(#stage) {
+    grid-template-columns: 474px repeat(3, minmax(0, 1fr));
+  }
+
+  main:has(#stage) > #stage {
+    grid-column: 1;
+    grid-row: 3 / span 4;
+    margin-right: 52px;
+  }
+
+  main:has(#stage) > label {
+    grid-column: 2 / -1;
+    grid-row: 3;
+  }
+
+  main:has(#stage) > button {
+    align-self: center;
+  }
+}
