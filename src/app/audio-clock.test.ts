@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { audioClock } from "./audio-clock";
-import { handler as setLatencyOffset } from "../modules/practice/slices/set-latency-offset/handler";
+import { setLatencyOffset } from "../modules/practice";
 
 // Fake AudioContext clock. suspend() and resume() record their calls.
 function fakeContext(currentTime: number, baseLatency = 0, outputLatency = 0) {

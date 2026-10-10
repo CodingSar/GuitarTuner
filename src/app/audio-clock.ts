@@ -19,7 +19,8 @@ export function audioClock(context: ClockContext): AudioClock {
   return {
     now: () => context.currentTime * 1000,
     heard: () =>
-      (context.currentTime - context.baseLatency - context.outputLatency) * 1000,
+      (context.currentTime - context.baseLatency - context.outputLatency) *
+      1000,
     pause: () => {
       void context.suspend();
     },
