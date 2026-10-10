@@ -1,7 +1,7 @@
 ---
 id: TASK-20
 title: 'Practice: player sets the BPM'
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-10-10 19:07'
@@ -21,11 +21,11 @@ The tempo is fixed per song, but the player wants to set the BPM themselves to p
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 GIVEN a song is chosen WHEN the practice page shows it THEN the BPM field shows that song's tempo
-- [ ] #2 GIVEN the player types a whole-number BPM WHEN Start is pressed THEN the notes are spaced 60000 divided by that BPM ms apart
-- [ ] #3 GIVEN the BPM field holds a value that is not a whole number from 20 to 240 WHEN Start is pressed THEN the session does not start and the field says why
-- [ ] #4 GIVEN the BPM field holds a whole number WHEN the -/+ button is pressed THEN the BPM moves by 5 and stays within 20 to 240
-- [ ] #5 GIVEN the player changed the BPM WHEN Reset to song default is pressed THEN the BPM field shows the chosen song's tempo
+- [x] #1 GIVEN a song is chosen WHEN the practice page shows it THEN the BPM field shows that song's tempo
+- [x] #2 GIVEN the player types a whole-number BPM WHEN Start is pressed THEN the notes are spaced 60000 divided by that BPM ms apart
+- [x] #3 GIVEN the BPM field holds a value that is not a whole number from 20 to 240 WHEN Start is pressed THEN the session does not start and the field says why
+- [x] #4 GIVEN the BPM field holds a whole number WHEN the -/+ button is pressed THEN the BPM moves by 5 and stays within 20 to 240
+- [x] #5 GIVEN the player changed the BPM WHEN Reset to song default is pressed THEN the BPM field shows the chosen song's tempo
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -67,3 +67,9 @@ step 5: ok, tempo-field 8/8, boundaries clean
 step 6: ok, pages.test 9/9, full suite 125/125, check.sh exit 0
 step 7 (added, not in plan allowlist): src/app/theme.css, #tempo styling and desktop grid placement (row 4 under songs, tally moved to row 5). Needed so the section lands between songs and tally, not below the stage. Desktop layout not checked visually.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+BPM field on the practice page (range 20 to 240). Song tempo shows on load and on card click; Start and card click check the field (whole number 20 to 240) and show the reason when invalid; -/+ move by 5 within range; Reset to song default restores the song tempo; note spacing is 60000 / BPM ms. Evidence: full suite 125/125 (npx vitest run), scripts/check.sh exit 0, pushed 445de83. Targeted tests: validate-tempo 9/9, adjust-tempo 4/4, to-practice 2/2, practice-view 15/15, tempo-field 8/8, pages 9/9. Deviations: range 20 to 240 (AC wording 'positive whole number'); jsdom pinned to 30.1.1 (30.1.2 younger than two weeks); step 7 added (theme.css, not in plan allowlist) for desktop placement, not checked visually; theme.css is over the 200-line source cap (pre-existing, not split).
+<!-- SECTION:FINAL_SUMMARY:END -->
