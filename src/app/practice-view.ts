@@ -4,14 +4,15 @@ import {
   recordHit,
   setFallSpeed,
   startSession,
+  tallyJudgments,
   toPractice,
   type Judgment,
   type PlacedNote,
   type PlayedInput,
   type PracticeSession,
   type Song,
+  type Tally,
 } from "../modules/practice";
-import type { Tally } from "../modules/practice/slices/tally-judgments/handler";
 
 // The audio clock the practice view runs on. now() is in milliseconds.
 export interface PracticeClock {
@@ -64,6 +65,9 @@ export function mountPractice(
 ): PracticeController {
   const fall = setFallSpeed({ slowPerMs: 0.15, fastPerMs: 0.3, rampMs: 500 });
   let chosen: Song | undefined;
+  // The index of the chosen song, and the index of the song that Start played.
+  let chosenIndex: number | undefined;
+  let playingIndex: number | undefined;
   let session: PracticeSession | undefined;
   let direction: Direction = "slow";
   // Pitches heard so far, as string and fret, with the audio time they came in.
@@ -78,15 +82,17 @@ export function mountPractice(
     return first.hitTime - session.timeToHit(0);
   }
 
-  return {
+  const controller: PracticeController = {
     selectSong(index: number): void {
       chosen = songs[index];
+      chosenIndex = index;
     },
     start(): void {
       if (chosen === undefined) return;
       const { sequence, stepMs } = toPractice(chosen);
       session = startSession(sequence, clock, stepMs);
       inputs.length = 0;
+      playingIndex = chosenIndex;
     },
     pause(): void {
       session?.pause();
@@ -129,7 +135,12 @@ export function mountPractice(
       return session.notes.map((note) => recordHit(note, inputs, WINDOW_MS, t));
     },
     tally(): Tally {
-      throw new Error("not implemented");
+      // Zeros unless the song being played is the one chosen now.
+      if (playingIndex !== chosenIndex) {
+        return { hits: 0, missed: 0, streak: 0 };
+      }
+      return tallyJudgments(controller.judgments());
     },
   };
+  return controller;
 }
