@@ -61,4 +61,6 @@ step 2: ok, adjust-tempo 4/4 (8d06623)
 step 3: ok, to-practice 2/2, tempo ?? song.tempo (commit below)
 
 step 4: ok, practice-view 15/15 (defaultTempo throws only when no song chosen)
+
+step 5: ok, tempo-field 8/8, boundaries clean
 <!-- SECTION:NOTES:END -->
