@@ -1,4 +1,9 @@
-import type { Target } from "../modules/tuning";
+import {
+  DEFAULT_REFERENCE_HZ,
+  selectPreset,
+  targetsFor,
+} from "../modules/tuning";
+import type { PresetName, Target } from "../modules/tuning";
 
 // The parts of the tuning page the tuning view writes to and reads from.
 export interface TuningView {
@@ -10,5 +15,19 @@ export interface TuningView {
 export function mountTuning(view: TuningView): {
   targets(): readonly Target[];
 } {
-  throw new Error("not implemented");
+  let current = view.preset.value as PresetName;
+
+  const update = (): void => {
+    current = view.preset.value as PresetName;
+    view.strings.textContent = selectPreset(current)
+      .strings.map((string) => string.label)
+      .join(" ");
+  };
+
+  update();
+  view.preset.onChange(update);
+
+  return {
+    targets: () => targetsFor(selectPreset(current), DEFAULT_REFERENCE_HZ),
+  };
 }
