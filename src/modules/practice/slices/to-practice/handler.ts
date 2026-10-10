@@ -7,5 +7,5 @@ export function handler(
   readonly sequence: readonly SongNote[];
   readonly stepMs: number;
 } {
-  return { sequence: song.notes, stepMs: 60000 / song.tempo };
+  return { sequence: song.notes, stepMs: 60000 / (tempo ?? song.tempo) };
 }
