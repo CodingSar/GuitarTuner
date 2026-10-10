@@ -4,6 +4,7 @@ title: 'tuning/set-reference: Set the reference pitch'
 status: To Do
 assignee: []
 created_date: '2026-10-10 11:41'
+updated_date: '2026-10-10 15:30'
 labels:
   - 'module:tuning'
 milestone: Tune by microphone
@@ -20,3 +21,9 @@ The reference pitch sets every target frequency. The tuner needs it adjustable s
 <!-- AC:BEGIN -->
 - [ ] #1 ASSUMED: the player can change the reference pitch from A4 = 440 Hz, and the target frequencies recompute from the new reference
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+ASSUMED #1 (adjustable reference) confirmed by user.
+<!-- SECTION:NOTES:END -->
