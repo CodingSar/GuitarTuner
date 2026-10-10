@@ -94,16 +94,36 @@ describe("practice-view", () => {
     practice.start();
     practice.faster();
 
-    // 500 ms before the first hit. Faster falls more pixels per millisecond,
-    // so the note is nearer the hit line than at the steady speed.
+    // 500 ms before the first hit. Faster covers more pixels per millisecond,
+    // so at that time the note is higher on screen (smaller y) than at the
+    // steady speed.
     steadyClock.time = 500;
     clock.time = 500;
-    expect(firstY(practice.frame())).toBeGreaterThan(firstY(steady.frame()));
+    expect(firstY(practice.frame())).toBeLessThan(firstY(steady.frame()));
 
     // At the hit time the note is on the line, at both speeds.
     steadyClock.time = 1000;
     clock.time = 1000;
     expect(firstY(practice.frame())).toBe(400);
     expect(firstY(steady.frame())).toBe(400);
+  });
+
+  it("TASK-13#3 Slower after Faster returns the notes to the steady speed", () => {
+    const steadyClock = fakeClock(0);
+    const steady = mountPractice([song], steadyClock, 400);
+    steady.selectSong(0);
+    steady.start();
+
+    const clock = fakeClock(0);
+    const practice = mountPractice([song], clock, 400);
+    practice.selectSong(0);
+    practice.start();
+    practice.faster();
+    practice.slower();
+
+    // 500 ms before the first hit, the note is where it is at the steady speed.
+    steadyClock.time = 500;
+    clock.time = 500;
+    expect(firstY(practice.frame())).toBe(firstY(steady.frame()));
   });
 });
